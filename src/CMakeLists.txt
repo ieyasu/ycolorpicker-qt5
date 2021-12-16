@@ -1,5 +1,6 @@
 set(ycolorpicker_SRCS
     main.cpp
+    mainwindow.cpp
 )
 
 add_executable(ycolorpicker ${ycolorpicker_SRCS})
