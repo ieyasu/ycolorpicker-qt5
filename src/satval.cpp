@@ -8,7 +8,7 @@
 static constexpr float svSizeF1 = svSize1;
 
 SaturationValue::SaturationValue(QWidget *parent, Color &c)
-    : QWidget(parent), color(c), hue(c.getHue())
+    : QWidget(parent), color(c), hue(-1)
 {
     constexpr int size = svSize + 2 * indicatorSize;
     setMinimumSize(size, size);
@@ -38,7 +38,7 @@ void SaturationValue::mouseMoveEvent(QMouseEvent *event) {
     color.setSatVal(pt.x() / svSizeF1, (svSize1 - pt.y()) / svSizeF1);
 }
 
-void SaturationValue::updateColor() {
+void SaturationValue::colorChanged() {
     if (hue != color.getHue()) {
         hue = color.getHue();
         update(rect()); // repaint

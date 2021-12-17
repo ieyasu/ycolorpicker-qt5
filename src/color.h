@@ -23,18 +23,18 @@ public:
     void setSatVal(float sat, float val);
 
 public slots:
-    void setR(int red) { r = red; rgb2hsv(); }
-    void setG(int grn) { g = grn; rgb2hsv(); }
-    void setB(int blu) { b = blu; rgb2hsv(); }
-    void setHue(float hue) { h = hue; hsv2rgb(); }
-    void setSat(float sat) { s = sat; hsv2rgb(); }
-    void setVal(float val) { v = val; hsv2rgb(); }
-    void setHue(double hue) { h = static_cast<float>(hue); hsv2rgb(); }
-    void setSat(double sat) { s = static_cast<float>(sat); hsv2rgb(); }
-    void setVal(double val) { v = static_cast<float>(val); hsv2rgb(); }
+    void setR(int red);
+    void setG(int grn);
+    void setB(int blu);
+    void setHue(float hue);
+    void setSat(float sat);
+    void setVal(float val);
+    void setHue(double hue);
+    void setSat(double sat);
+    void setVal(double val);
 
-    //signals:
-    //void changed(const Color &color);
+signals:
+    void changed();
 
 private:
     int r, g, b;

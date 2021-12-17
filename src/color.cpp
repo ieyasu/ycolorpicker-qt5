@@ -21,10 +21,21 @@ Color::Color(float hue, float sat, float val, QObject *parent)
     hsv2rgb();
 }
 
+void Color::setR(int red) { r = red; rgb2hsv(); }
+void Color::setG(int grn) { g = grn; rgb2hsv();  }
+void Color::setB(int blu) { b = blu; rgb2hsv(); }
+void Color::setHue(float hue) { h = hue; hsv2rgb(); }
+void Color::setSat(float sat) { s = sat; hsv2rgb(); }
+void Color::setVal(float val) { v = val; hsv2rgb(); }
+void Color::setHue(double hue) { h = static_cast<float>(hue); hsv2rgb(); }
+void Color::setSat(double sat) { s = static_cast<float>(sat); hsv2rgb(); }
+void Color::setVal(double val) { v = static_cast<float>(val); hsv2rgb(); }
+
 void Color::setSatVal(float sat, float val) {
     s = sat;
     v = val;
     hsv2rgb();
+    emit changed();
 }
 
 // https://en.wikipedia.org/wiki/HSL_and_HSV#Color_conversion_formulae
@@ -64,6 +75,8 @@ void Color::hsv2rgb() {
     r = static_cast<int>(255 * (rf + m));
     g = static_cast<int>(255 * (gf + m));
     b = static_cast<int>(255 * (bf + m));
+
+    emit changed();
 }
 
 static inline float mod6f(float x) {
@@ -94,4 +107,6 @@ void Color::rgb2hsv() {
     }
     s = (cmax == 0) ? 0 : del / cmax;
     v = cmax;
+
+    emit changed();
 }

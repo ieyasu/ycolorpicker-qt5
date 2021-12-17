@@ -23,4 +23,8 @@ MainWindow::MainWindow()
     grid->addWidget(satval, 0, 0);
     grid->addWidget(hueslider, 0, 1);
     setLayout(grid);
+
+    connect(&color, &Color::changed, satval, &SaturationValue::colorChanged);
+    connect(&color, &Color::changed, hueslider, &HueSlider::colorChanged);
+    color.setHue(240.0f);
 }

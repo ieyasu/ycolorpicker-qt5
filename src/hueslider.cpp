@@ -8,7 +8,7 @@
 #include <algorithm>
 
 HueSlider::HueSlider(QWidget *parent, Color &c)
-    : QWidget(parent), color(c), hue(c.getHue())
+    : QWidget(parent), color(c), hue(-1)
 {
     setMinimumSize(hsWidth, hsHeight);
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -51,7 +51,7 @@ void HueSlider::mouseMoveEvent(QMouseEvent *event) {
     (void) event;
 }
 
-void HueSlider::updateColor() {
+void HueSlider::colorChanged() {
     if (hue != color.getHue()) {
         hue = color.getHue();
         update(rect()); // repaint

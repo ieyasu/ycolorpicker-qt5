@@ -13,7 +13,7 @@ public:
     explicit SaturationValue(QWidget *parent, Color &c);
 
 public Q_SLOTS:
-    void updateColor();
+    void colorChanged();
 
 protected:
     virtual void paintEvent(QPaintEvent *event) override;
