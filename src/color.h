@@ -12,9 +12,9 @@ public:
     Color(int red, int green, int blue, QObject *parent = nullptr);
     Color(float hue, float sat, float val, QObject *parent = nullptr);
 
-    float getR() const { return r; }
-    float getG() const { return g; }
-    float getB() const { return b; }
+    int getR() const { return r; }
+    int getG() const { return g; }
+    int getB() const { return b; }
     float getHue() const { return h; }
     float getSat() const { return s; }
     float getVal() const { return v; }

@@ -16,7 +16,6 @@ HueSlider::HueSlider(QWidget *parent, Color &c)
 
 void HueSlider::paintEvent(QPaintEvent *event) {
     (void)event;
-
     QPainter painter(this);
 
     // gutters - necessary?
@@ -42,8 +41,6 @@ void HueSlider::paintEvent(QPaintEvent *event) {
     constexpr int hsw = hsWidth;
     QPoint rind[] = {{hsw, y-sz}, {hsw-sz, y}, {hsw, y+sz}, {hsw, y-sz}};
     painter.drawPolygon(rind, 4);
-
-    painter.end();
 }
 
 void HueSlider::mouseMoveEvent(QMouseEvent *event) {
