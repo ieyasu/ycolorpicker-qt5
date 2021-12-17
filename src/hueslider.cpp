@@ -35,8 +35,7 @@ void HueSlider::paintEvent(QPaintEvent *event) {
     // indicators
     painter.setPen(Qt::white);
     painter.setBrush(Qt::white);
-    int h = std::clamp(static_cast<int>(hue), 0, svSize1);
-    int y = indicatorSize + svSize1 - h;
+    int y = indicatorSize + svSize1 - static_cast<int>(hue);
     constexpr int sz = indicatorSize - 1; // 1px gap
     QPoint lind[] = {{-1, y-sz}, {sz-1, y}, {-1, y+sz}, {-1, y-sz}};
     painter.drawPolygon(lind, 4);

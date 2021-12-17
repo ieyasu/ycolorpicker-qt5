@@ -2,6 +2,8 @@
 
 #include <math.h>
 
+#include <algorithm>
+
 Color::Color(QObject *parent)
     : QObject(parent),
       r(0), g(0), b(0),
@@ -21,21 +23,52 @@ Color::Color(float hue, float sat, float val, QObject *parent)
     hsv2rgb();
 }
 
-void Color::setR(int red) { r = red; rgb2hsv(); }
-void Color::setG(int grn) { g = grn; rgb2hsv();  }
-void Color::setB(int blu) { b = blu; rgb2hsv(); }
-void Color::setHue(float hue) { h = hue; hsv2rgb(); }
-void Color::setSat(float sat) { s = sat; hsv2rgb(); }
-void Color::setVal(float val) { v = val; hsv2rgb(); }
-void Color::setHue(double hue) { h = static_cast<float>(hue); hsv2rgb(); }
-void Color::setSat(double sat) { s = static_cast<float>(sat); hsv2rgb(); }
-void Color::setVal(double val) { v = static_cast<float>(val); hsv2rgb(); }
+void Color::setR(int red) {
+    red = std::clamp(red, 0, 255);
+    if (red != r) { r = red; rgb2hsv(); }
+}
+void Color::setG(int grn) {
+    grn = std::clamp(grn, 0, 255);
+    if (grn != g) { g = grn; rgb2hsv(); }
+}
+void Color::setB(int blu) {
+    blu = std::clamp(blu, 0, 255);
+    if (blu != b) { b = blu; rgb2hsv(); }
+}
+
+void Color::setHue(float hue) {
+    hue = std::clamp(hue, 0.0f, 359.0f);
+    if (hue != h) { h = hue; hsv2rgb(); }
+}
+void Color::setSat(float sat) {
+    sat = std::clamp(sat, 0.0f, 1.0f);
+    if (sat != s) { s = sat; hsv2rgb(); }
+}
+void Color::setVal(float val) {
+    val = std::clamp(val, 0.0f, 1.0f);
+    if (val != v) { v = val; hsv2rgb(); }
+}
+
+void Color::setHue(double hue) {
+    hue = std::clamp(hue, 0.0, 359.0);
+    if (hue != h) { h = static_cast<float>(hue); hsv2rgb(); }
+}
+void Color::setSat(double sat) {
+    sat = std::clamp(sat, 0.0, 1.0);
+    if (sat != s) { s = static_cast<float>(sat); hsv2rgb(); }
+}
+void Color::setVal(double val) {
+    val = std::clamp(val, 0.0, 1.0);
+    if (val != v) { v = static_cast<float>(val); hsv2rgb(); }
+}
 
 void Color::setSatVal(float sat, float val) {
-    s = sat;
-    v = val;
-    hsv2rgb();
-    emit changed();
+    bool changed = false;
+    sat = std::clamp(sat, 0.0f, 1.0f);
+    if (sat != s) { s = sat; changed = true; }
+    val = std::clamp(val, 0.0f, 1.0f);
+    if (val != v) { v = val; changed = true; }
+    if (changed) hsv2rgb();
 }
 
 // https://en.wikipedia.org/wiki/HSL_and_HSV#Color_conversion_formulae
@@ -93,6 +126,7 @@ void Color::rgb2hsv() {
 
     if (cmax == 0 || del == 0) {
         h = s = v = 0;
+        emit changed();
         return;
     }
 
