@@ -20,10 +20,6 @@ void HueSlider::paintEvent(QPaintEvent *event) {
     (void)event;
     QPainter painter(this);
 
-    // gutters - necessary?
-    painter.eraseRect(0, 0, indicatorSize, hsHeight);
-    painter.eraseRect(indicatorSize + barWidth, 0, indicatorSize, hsHeight);
-
     // hues
     for (int y = 0; y < svSize; y++) {
         constexpr int l = indicatorSize, r = indicatorSize + barWidth - 1;

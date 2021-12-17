@@ -18,10 +18,6 @@ void RgbSlider::repaint() {
 }
 
 void RgbSlider::paint(QPainter &painter) {
-    // gutters
-    painter.eraseRect(0, 0, rgbWidth, indicatorSize);
-    painter.eraseRect(0, indicatorSize + barHeight, rgbWidth, indicatorSize);
-
     // indicators
     painter.setPen(Qt::white);
     painter.setBrush(Qt::white);
