@@ -4,6 +4,7 @@ set(ycolorpicker_SRCS
     main.cpp
     mainwindow.cpp
     rgbsliders.cpp
+    rgbspinners.cpp
     satval.cpp
 )
 

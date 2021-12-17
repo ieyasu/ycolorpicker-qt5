@@ -3,6 +3,7 @@
 
 #include "color.h"
 
+#include <QLabel>
 #include <QWidget>
 
 class HueSlider;
@@ -23,6 +24,12 @@ private:
     RedSlider *redslider;
     GreenSlider *greenslider;
     BlueSlider *blueslider;
+};
+
+class RgbLabel : public QLabel {
+    Q_OBJECT
+public:
+    RgbLabel(QWidget *parent, const QString &text);
 };
 
 #endif // MAINWINDOW_H

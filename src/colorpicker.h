@@ -23,4 +23,6 @@ static constexpr int rgbWidth = rgbSize + 2 * indicatorSize;
 static constexpr int barHeight = 12;
 static constexpr int rgbHeight = barHeight + 2 * indicatorSize;
 
+static constexpr int rgbLabelWidth = 18;
+
 #endif // COLORPICKER_H

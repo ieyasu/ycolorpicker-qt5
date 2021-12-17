@@ -3,9 +3,21 @@
 #include "hueslider.h"
 #include "mainwindow.h"
 #include "rgbsliders.h"
+#include "rgbspinners.h"
 #include "satval.h"
 
 #include <QtWidgets>
+
+static QHBoxLayout *mkRgbBox(MainWindow *win, RgbSlider *slider, RgbSpinner *spinner, const QString &text) {
+    auto box = new QHBoxLayout();
+    box->setSpacing(3);
+    box->addStretch();
+    box->addWidget(slider);
+    box->addWidget(new RgbLabel(win, text));
+    box->addWidget(spinner);
+    box->addSpacing(indicatorSize);
+    return box;
+}
 
 MainWindow::MainWindow()
     : QWidget(nullptr),
@@ -19,6 +31,15 @@ MainWindow::MainWindow()
     setWindowTitle("Color Picker");
     setAutoFillBackground(true);
 
+    auto redSpinner = new RedSpinner(this, color);
+    auto redBox = mkRgbBox(this, redslider, redSpinner, QStringLiteral("R:"));
+
+    auto greenSpinner = new GreenSpinner(this, color);
+    auto greenBox = mkRgbBox(this, greenslider, greenSpinner, QStringLiteral("G:"));
+
+    auto blueSpinner = new BlueSpinner(this, color);
+    auto blueBox = mkRgbBox(this, blueslider, blueSpinner, QStringLiteral("B:"));
+
     auto grid = new QGridLayout(this);
     constexpr int m = margin - indicatorSize;
     grid->setContentsMargins(m, m, m, m);
@@ -26,15 +47,31 @@ MainWindow::MainWindow()
     grid->setVerticalSpacing(spacing);
     grid->addWidget(satval, 0, 0);
     grid->addWidget(hueslider, 0, 1);
-    grid->addWidget(redslider, 1, 0);
-    grid->addWidget(greenslider, 2, 0);
-    grid->addWidget(blueslider, 3, 0);
+    grid->addLayout(redBox, 1, 0);
+    grid->addLayout(greenBox, 2, 0);
+    grid->addLayout(blueBox, 3, 0);
     setLayout(grid);
 
     connect(&color, &Color::changed, satval, &SaturationValue::colorChanged);
     connect(&color, &Color::changed, hueslider, &HueSlider::colorChanged);
     connect(&color, &Color::changed, redslider, &RedSlider::colorChanged);
+    connect(&color, &Color::changed, redSpinner, &RedSpinner::colorChanged);
     connect(&color, &Color::changed, greenslider, &GreenSlider::colorChanged);
+    connect(&color, &Color::changed, greenSpinner, &GreenSpinner::colorChanged);
     connect(&color, &Color::changed, blueslider, &BlueSlider::colorChanged);
+    connect(&color, &Color::changed, blueSpinner, &BlueSpinner::colorChanged);
     color.setHue(240.0f);
+}
+
+
+RgbLabel::RgbLabel(QWidget *parent, const QString &text)
+    : QLabel(parent)
+{
+    setText(text);
+    setAlignment(Qt::AlignRight);
+    setMinimumWidth(rgbLabelWidth);
+    setMaximumWidth(rgbLabelWidth);
+    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+
 }
