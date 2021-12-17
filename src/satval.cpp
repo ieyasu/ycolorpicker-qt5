@@ -13,6 +13,7 @@ SaturationValue::SaturationValue(QWidget *parent, Color &c)
     constexpr int size = svSize + 2 * indicatorSize;
     setMinimumSize(size, size);
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    setFocusPolicy(Qt::StrongFocus);
 }
 
 void SaturationValue::paintEvent(QPaintEvent *event) {

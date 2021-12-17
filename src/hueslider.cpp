@@ -12,6 +12,8 @@ HueSlider::HueSlider(QWidget *parent, Color &c)
 {
     setMinimumSize(hsWidth, hsHeight);
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    setFocusPolicy(Qt::StrongFocus);
+
 }
 
 void HueSlider::paintEvent(QPaintEvent *event) {

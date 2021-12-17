@@ -61,6 +61,8 @@ MainWindow::MainWindow()
     connect(&color, &Color::changed, blueslider, &BlueSlider::colorChanged);
     connect(&color, &Color::changed, blueSpinner, &BlueSpinner::colorChanged);
     color.setHue(240.0f);
+
+    satval->setFocus();
 }
 
 
