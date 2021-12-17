@@ -2,6 +2,7 @@
 #ifndef SATVAL_H
 #define SATVAL_H
 
+#include <QPixmap>
 #include <QPoint>
 #include <QWidget>
 
@@ -17,12 +18,17 @@ public Q_SLOTS:
 
 protected:
     virtual void paintEvent(QPaintEvent *event) override;
+    virtual void keyPressEvent(QKeyEvent *event) override;
     virtual void mouseMoveEvent(QMouseEvent *event) override;
+    virtual void mousePressEvent(QMouseEvent *event) override;
+    virtual void mouseReleaseEvent(QMouseEvent *event) override;
 
 private:
+    QPixmap square;
     Color &color;
-    QPoint pt;
     float hue;
+
+    void paintSquare();
 };
 
 #endif // SATVAL_H
