@@ -16,7 +16,8 @@ public Q_SLOTS:
 protected:
     virtual void paintEvent(QPaintEvent *event) override;
     virtual void mouseMoveEvent(QMouseEvent *event) override;
-
+    virtual void mousePressEvent(QMouseEvent *event) override;
+    virtual void wheelEvent(QWheelEvent *event) override;
 private:
     Color &color;
     float hue;

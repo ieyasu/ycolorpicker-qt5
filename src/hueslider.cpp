@@ -26,7 +26,7 @@ void HueSlider::paintEvent(QPaintEvent *event) {
     // hues
     for (int y = 0; y < svSize; y++) {
         constexpr int l = indicatorSize, r = indicatorSize + barWidth - 1;
-        float h = svSize - y;
+        float h = svSize1 - y;
         painter.setPen(Color(h, 1.0f, 0.95f).toQColor());
         int y_ = indicatorSize + y;
         painter.drawLine(l, y_, r, y_);
@@ -48,7 +48,23 @@ void HueSlider::paintEvent(QPaintEvent *event) {
 }
 
 void HueSlider::mouseMoveEvent(QMouseEvent *event) {
-    (void) event;
+    mousePressEvent(event);
+}
+
+void HueSlider::mousePressEvent(QMouseEvent *event) {
+    int h = std::clamp(svSize1 - (event->pos().y() - indicatorSize), 0, svSize1);
+    if (h != hue) color.setHue(static_cast<float>(h));
+}
+
+void HueSlider::wheelEvent(QWheelEvent *event) {
+    if (event->source() == Qt::MouseEventSynthesizedBySystem) {
+        QPoint delta = event->pixelDelta();
+        if (delta.y() != 0) color.setHue(hue + delta.y());
+    } else {
+        QPoint delta = event->angleDelta();
+        if (delta.y() < 0) color.setHue(hue - 1);
+        else if (delta.y() > 0) color.setHue(hue + 1);
+    }
 }
 
 void HueSlider::colorChanged() {
