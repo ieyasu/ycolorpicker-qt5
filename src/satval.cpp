@@ -27,13 +27,11 @@ void SaturationValue::paintEvent(QPaintEvent *event) {
 
     // circle indicator
     painter.setRenderHint(QPainter::Antialiasing);
+    auto pen = (color.getSat() < 0.45f && color.getVal() > 0.55f) ? Qt::black : Qt::white;
+    painter.setPen(pen);
     int x = static_cast<int>(color.getSat() * svSizeF1);
     int y = static_cast<int>((1 - color.getVal()) * svSizeF1);
     int sz = 2 * indicatorSize + 1;
-    painter.setPen(Qt::white);
-    painter.drawArc(x, y, sz, sz, 0, 5760);
-    painter.setPen(Qt::black);
-    x++; y++; sz -= 2;
     painter.drawArc(x, y, sz, sz, 0, 5760);
 }
 
