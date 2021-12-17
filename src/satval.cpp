@@ -1,21 +1,18 @@
 // satval.cpp - Saturation/Value Selector Widget
+#include "colorpicker.h"
 #include "color.h"
 #include "satval.h"
 
 #include <QtGui>
 
-static constexpr int svSize = 360;
-static constexpr int svSize1 = svSize - 1;
 static constexpr float svSizeF1 = svSize1;
 
 SaturationValue::SaturationValue(QWidget *parent, Color &c)
     : QWidget(parent), color(c), hue(c.getHue())
 {
+    constexpr int size = svSize + 2 * indicatorSize;
+    setMinimumSize(size, size);
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-}
-
-QSize SaturationValue::sizeHint() const {
-    return QSize(svSize, svSize);
 }
 
 void SaturationValue::paintEvent(QPaintEvent *event) {
@@ -23,14 +20,12 @@ void SaturationValue::paintEvent(QPaintEvent *event) {
 
     QPainter painter(this);
 
-    hue = 240;
-
     for (int y = 0; y < svSize; y++) {
         float v = (svSize - y) / svSizeF1;
         for (int x = 0; x < svSize; x++) {
             float s = x / svSizeF1;
             painter.setPen(Color(hue, s, v).toQColor());
-            painter.drawPoint(x, y);
+            painter.drawPoint(x + indicatorSize, y + indicatorSize);
         }
     }
 
@@ -38,7 +33,8 @@ void SaturationValue::paintEvent(QPaintEvent *event) {
 }
 
 void SaturationValue::mouseMoveEvent(QMouseEvent *event) {
-    pt = event->pos();
+    auto pos = event->pos();
+    pt = QPoint(pos.x() - indicatorSize, pos.y() - indicatorSize);
     color.setSatVal(pt.x() / svSizeF1, (svSize1 - pt.y()) / svSizeF1);
 }
 

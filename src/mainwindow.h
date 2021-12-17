@@ -5,6 +5,7 @@
 
 #include <QWidget>
 
+class HueSlider;
 class SaturationValue;
 
 class MainWindow : public QWidget {
@@ -15,6 +16,7 @@ public:
 private:
     Color color;
     SaturationValue *satval;
+    HueSlider *hueslider;
 };
 
 #endif // MAINWINDOW_H

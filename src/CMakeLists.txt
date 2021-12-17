@@ -1,5 +1,6 @@
 set(ycolorpicker_SRCS
     color.cpp
+    hueslider.cpp
     main.cpp
     mainwindow.cpp
     satval.cpp

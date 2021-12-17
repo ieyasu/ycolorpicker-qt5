@@ -1,16 +1,14 @@
-// satval.h - Saturation/Value Selector Widget
-#ifndef SATVAL_H
-#define SATVAL_H
+#ifndef HUESLIDER_H
+#define HUESLIDER_H
 
-#include <QPoint>
 #include <QWidget>
 
 class Color;
 
-class SaturationValue : public QWidget {
+class HueSlider : public QWidget {
     Q_OBJECT
 public:
-    explicit SaturationValue(QWidget *parent, Color &c);
+    explicit HueSlider(QWidget *parent, Color &c);
 
 public Q_SLOTS:
     void updateColor();
@@ -21,8 +19,7 @@ protected:
 
 private:
     Color &color;
-    QPoint pt;
     float hue;
 };
 
-#endif // SATVAL_H
+#endif // HUESLIDER_H
