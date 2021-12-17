@@ -67,18 +67,22 @@ void SaturationValue::keyPressEvent(QKeyEvent *event) {
 }
 
 void SaturationValue::mouseMoveEvent(QMouseEvent *event) {
-    mousePressEvent(event);
+    setSatVal(event->pos());
 }
 
 void SaturationValue::mousePressEvent(QMouseEvent *event) {
-    int s = std::clamp(event->pos().x() - indicatorSize, 0, svSize1);
-    int v = std::clamp(svSize1 - (event->pos().y() - indicatorSize), 0, svSize1);
+    setSatVal(event->pos());
+    setCursor(Qt::BlankCursor);
+}
+
+void SaturationValue::setSatVal(const QPoint &pos) {
+    int s = std::clamp(pos.x() - indicatorSize, 0, svSize1);
+    int v = std::clamp(svSize1 - (pos.y() - indicatorSize), 0, svSize1);
     color.setSatVal(s / svSizeF1, v / svSizeF1);
-    //setCursor(Qt::BlankCursor); // XXX why you no worky?!
 }
 
 void SaturationValue::mouseReleaseEvent(QMouseEvent *event) {
-    //setCursor(Qt::CrossCursor);
+    setCursor(Qt::CrossCursor);
 }
 
 void SaturationValue::colorChanged() {

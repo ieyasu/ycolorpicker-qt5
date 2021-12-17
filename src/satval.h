@@ -29,6 +29,7 @@ private:
     float hue;
 
     void paintSquare();
+    void setSatVal(const QPoint &pos);
 };
 
 #endif // SATVAL_H
