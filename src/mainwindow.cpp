@@ -1,5 +1,6 @@
 #include "colorpicker.h"
 #include "color.h"
+#include "currcolordisplay.h"
 #include "hueslider.h"
 #include "mainwindow.h"
 #include "palette.h"
@@ -62,19 +63,23 @@ MainWindow::MainWindow()
     auto stdPalette  = new Palette(this, QStringLiteral("Standard Palette"), color, stdPalColors, stdPalCount);
     auto userPalette = new Palette(this, QStringLiteral("User Palette"), color);
 
+    auto currColor = new CurrentColorDisplay(this, color);
+
     auto vbox = new QVBoxLayout();
     vbox->setSpacing(spacing);
     vbox->addWidget(stdPalette);
     vbox->addWidget(userPalette);
     vbox->addStretch();
+    vbox->addWidget(currColor);
+    vbox->addSpacing(1);
 
     auto grid = new QGridLayout(this);
     constexpr int m = margin - indicatorSize;
     grid->setContentsMargins(m, m, m, m);
     grid->setHorizontalSpacing(spacing);
     grid->setVerticalSpacing(spacing);
-    grid->addWidget(satval, 0, 0);
-    grid->addWidget(hueslider, 0, 1);
+    grid->addWidget(satval, 0, 0, Qt::AlignTop);
+    grid->addWidget(hueslider, 0, 1, Qt::AlignTop);
     grid->addLayout(redBox, 1, 0);
     grid->addLayout(greenBox, 2, 0);
     grid->addLayout(blueBox, 3, 0);
@@ -95,6 +100,7 @@ MainWindow::MainWindow()
     connect(&color, &Color::changed, hueSpinner, &HueSpinner::colorChanged);
     connect(&color, &Color::changed, satSpinner, &SatSpinner::colorChanged);
     connect(&color, &Color::changed, valSpinner, &ValSpinner::colorChanged);
+    connect(&color, &Color::changed, currColor, &CurrentColorDisplay::colorChanged);
     color.setHue(240.0f);
 
     satval->setFocus();

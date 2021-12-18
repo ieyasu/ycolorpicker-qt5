@@ -1,3 +1,4 @@
+#include "colorpicker.h"
 #include "palette.h"
 
 #include <QtGui>
@@ -37,6 +38,7 @@ Palette::Palette(
     : QWidget(parent)
 {
     auto grid = new QGridLayout(this);
+    grid->setContentsMargins(indicatorSize, indicatorSize, 0, 0);
     grid->setHorizontalSpacing(spacing);
     grid->setVerticalSpacing(spacing);
     auto lbl = new QLabel(this);

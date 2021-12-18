@@ -4,24 +4,19 @@
 
 #include <algorithm>
 
-Color::Color(QObject *parent)
-    : QObject(parent),
-      r(0), g(0), b(0),
-      h(0), s(0), v(0) {}
-
-Color::Color(int red, int green, int blue, QObject *parent)
-    : QObject(parent),
-      r(red), g(green), b(blue)
+Color::Color(int red, int green, int blue)
+    : r(red), g(green), b(blue)
 {
     rgb2hsv();
 }
 
-Color::Color(double hue, double sat, double val, QObject *parent)
-    : QObject(parent),
-      h(hue), s(sat), v(val)
+Color::Color(double hue, double sat, double val)
+    : h(hue), s(sat), v(val)
 {
     hsv2rgb();
 }
+
+Color::Color(const Color &c) : r(c.r), g(c.g), b(c.b), h(c.h), s(c.s), v(c.v) {}
 
 Color &Color::operator=(const Color &c) {
     bool ch = false;

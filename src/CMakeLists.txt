@@ -1,6 +1,7 @@
 set(ycolorpicker_SRCS
     color.cpp
     component_spinners.cpp
+    currcolordisplay.cpp
     hueslider.cpp
     main.cpp
     mainwindow.cpp

@@ -10,9 +10,9 @@
 class Color : public QObject {
     Q_OBJECT
 public:
-    Color(QObject *parent = nullptr);
-    Color(int red, int green, int blue, QObject *parent = nullptr);
-    Color(double hue, double sat, double val, QObject *parent = nullptr);
+    Color(int red = 0, int green = 0, int blue = 0);
+    Color(double hue, double sat, double val);
+    Color(const Color &c);
 
     Color &operator=(const Color &c);
 
