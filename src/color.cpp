@@ -123,12 +123,7 @@ void Color::rgb2hsv() {
     float cmax = r > g ? (r > b ? rf : bf) : (g > b ? gf : bf);
     float cmin = r < g ? (r < b ? rf : bf) : (g < b ? gf : bf);
     float del = cmax - cmin;
-
-    if (cmax == 0 || del == 0) {
-        h = s = v = 0;
-        emit changed();
-        return;
-    }
+    if (del == 0) del = 1e-20;
 
     if (cmax == rf) {
         h = 60 * mod6f((gf - bf) / del);
