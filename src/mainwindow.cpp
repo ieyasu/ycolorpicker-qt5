@@ -74,6 +74,7 @@ MainWindow::MainWindow()
     vbox->addSpacing(1);
 
     auto grid = new QGridLayout(this);
+    grid->setSizeConstraint(QLayout::SetFixedSize);
     constexpr int m = margin - indicatorSize;
     grid->setContentsMargins(m, m, m, m);
     grid->setHorizontalSpacing(spacing);
