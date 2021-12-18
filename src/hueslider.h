@@ -21,7 +21,7 @@ protected:
 
 private:
     Color &color;
-    float hue;
+    double hue;
 };
 
 #endif // HUESLIDER_H

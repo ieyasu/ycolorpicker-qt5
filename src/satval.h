@@ -26,7 +26,7 @@ protected:
 private:
     QPixmap square;
     Color &color;
-    float hue;
+    double hue;
 
     void paintSquare();
     void setSatVal(const QPoint &pos);

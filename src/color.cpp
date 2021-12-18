@@ -16,7 +16,7 @@ Color::Color(int red, int green, int blue, QObject *parent)
     rgb2hsv();
 }
 
-Color::Color(float hue, float sat, float val, QObject *parent)
+Color::Color(double hue, double sat, double val, QObject *parent)
     : QObject(parent),
       h(hue), s(sat), v(val)
 {
@@ -48,37 +48,24 @@ void Color::setB(int blu) {
     if (blu != b) { b = blu; rgb2hsv(); }
 }
 
-void Color::setHue(float hue) {
-    hue = std::clamp(hue, 0.0f, 359.0f);
-    if (hue != h) { h = hue; hsv2rgb(); }
-}
-void Color::setSat(float sat) {
-    sat = std::clamp(sat, 0.0f, 1.0f);
-    if (sat != s) { s = sat; hsv2rgb(); }
-}
-void Color::setVal(float val) {
-    val = std::clamp(val, 0.0f, 1.0f);
-    if (val != v) { v = val; hsv2rgb(); }
-}
-
 void Color::setHue(double hue) {
     hue = std::clamp(hue, 0.0, 359.0);
-    if (hue != h) { h = static_cast<float>(hue); hsv2rgb(); }
+    if (hue != h) { h = hue; hsv2rgb(); }
 }
 void Color::setSat(double sat) {
     sat = std::clamp(sat, 0.0, 1.0);
-    if (sat != s) { s = static_cast<float>(sat); hsv2rgb(); }
+    if (sat != s) { s = sat; hsv2rgb(); }
 }
 void Color::setVal(double val) {
     val = std::clamp(val, 0.0, 1.0);
-    if (val != v) { v = static_cast<float>(val); hsv2rgb(); }
+    if (val != v) { v = val; hsv2rgb(); }
 }
 
-void Color::setSatVal(float sat, float val) {
+void Color::setSatVal(double sat, double val) {
     bool changed = false;
-    sat = std::clamp(sat, 0.0f, 1.0f);
+    sat = std::clamp(sat, 0.0, 1.0);
     if (sat != s) { s = sat; changed = true; }
-    val = std::clamp(val, 0.0f, 1.0f);
+    val = std::clamp(val, 0.0, 1.0);
     if (val != v) { v = val; changed = true; }
     if (changed) hsv2rgb();
 }
@@ -94,16 +81,16 @@ void Color::setRGB(const RgbTriple &triple) {
 // https://en.wikipedia.org/wiki/HSL_and_HSV#Color_conversion_formulae
 // https://www.rapidtables.com/convert/color/hsv-to-rgb.html
 
-static inline float mod2f(float x) {
+static inline double mod2d(double x) {
     return x - floorf(x / 2) * 2;
 }
 
 void Color::hsv2rgb() {
-    float c = s * v;
-    float h_ = h / 60.0f;
-    float x = c * (1 - fabsf(mod2f(h_) - 1));
+    double c = s * v;
+    double h_ = h / 60.0;
+    double x = c * (1 - fabsf(mod2d(h_) - 1));
 
-    float rf = 0, gf = 0, bf = 0;
+    double rf = 0, gf = 0, bf = 0;
     if (h_ <= 1) {
         rf = c;
         gf = x;
@@ -124,29 +111,32 @@ void Color::hsv2rgb() {
         bf = x;
     }
 
-    float m = v - c;
-    r = static_cast<int>(255 * (rf + m));
-    g = static_cast<int>(255 * (gf + m));
-    b = static_cast<int>(255 * (bf + m));
+    double m = v - c;
+    r = static_cast<int>(256 * (rf + m));
+    if (r > 255) r = 255;
+    g = static_cast<int>(256 * (gf + m));
+    if (g > 255) g = 255;
+    b = static_cast<int>(256 * (bf + m));
+    if (b > 255) b = 255;
 
     emit changed();
 }
 
-static inline float mod6f(float x) {
+static inline double mod6d(double x) {
     return x - floorf(x / 6) * 6;
 }
 
 void Color::rgb2hsv() {
-    float rf = r / 255.0f;
-    float gf = g / 255.0f;
-    float bf = b / 255.0f;
-    float cmax = r > g ? (r > b ? rf : bf) : (g > b ? gf : bf);
-    float cmin = r < g ? (r < b ? rf : bf) : (g < b ? gf : bf);
-    float del = cmax - cmin;
+    double rf = r / 255.0;
+    double gf = g / 255.0;
+    double bf = b / 255.0;
+    double cmax = r > g ? (r > b ? rf : bf) : (g > b ? gf : bf);
+    double cmin = r < g ? (r < b ? rf : bf) : (g < b ? gf : bf);
+    double del = cmax - cmin;
     if (del == 0) del = 1e-20;
 
     if (cmax == rf) {
-        h = 60 * mod6f((gf - bf) / del);
+        h = 60 * mod6d((gf - bf) / del);
     } else if (cmax == gf) {
         h = 60 * ((bf - rf) / del + 2);
     } else if (cmax == bf) {

@@ -74,7 +74,7 @@ void HueSpinner::colorChanged() {
 SatSpinner::SatSpinner(QWidget *parent, Color &c)
     : HsvSpinner(parent, c, 1, 0.0025)
 {
-    setDecimals(3);
+    setDecimals(4);
     connect(this, SIGNAL(valueChanged(double)), &c, SLOT(setSat(double)));
 }
 
@@ -87,7 +87,7 @@ void SatSpinner::colorChanged() {
 ValSpinner::ValSpinner(QWidget *parent, Color &c)
     : HsvSpinner(parent, c, 1, 0.0025)
 {
-    setDecimals(3);
+    setDecimals(4);
     connect(this, SIGNAL(valueChanged(double)), &c, SLOT(setVal(double)));
 }
 

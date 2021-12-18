@@ -8,7 +8,7 @@
 
 #include <algorithm>
 
-static constexpr float svSizeF1 = svSize1;
+static constexpr double svSizeD1 = svSize1;
 
 SaturationValue::SaturationValue(QWidget *parent, Color &c)
     : QWidget(parent), square(svSize, svSize), color(c), hue(-1)
@@ -29,8 +29,8 @@ void SaturationValue::paintEvent(QPaintEvent *event) {
     painter.setRenderHint(QPainter::Antialiasing);
     auto pen = (color.getSat() < 0.45f && color.getVal() > 0.55f) ? Qt::black : Qt::white;
     painter.setPen(pen);
-    int x = static_cast<int>(color.getSat() * svSizeF1);
-    int y = static_cast<int>((1 - color.getVal()) * svSizeF1);
+    int x = static_cast<int>(color.getSat() * svSizeD1);
+    int y = static_cast<int>((1 - color.getVal()) * svSizeD1);
     int sz = 2 * indicatorSize + 1;
     painter.drawArc(x, y, sz, sz, 0, 5760);
 }
@@ -39,9 +39,9 @@ void SaturationValue::paintSquare() {
     QPainter painter(&square);
 
     for (int y = 0; y < svSize; y++) {
-        float v = (svSize - y) / svSizeF1;
+        double v = (svSize - y) / svSizeD1;
         for (int x = 0; x < svSize; x++) {
-            float s = x / svSizeF1;
+            double s = x / svSizeD1;
             painter.setPen(Color(hue, s, v).toQColor());
             painter.drawPoint(x, y);
         }
@@ -49,7 +49,7 @@ void SaturationValue::paintSquare() {
 }
 
 void SaturationValue::keyPressEvent(QKeyEvent *event) {
-    constexpr float frac = 1 / svSizeF1;
+    constexpr double frac = 1 / svSizeD1;
     switch (event->key()) {
     case Qt::Key_Left:
         color.setSat(color.getSat() - frac);
@@ -78,7 +78,7 @@ void SaturationValue::mousePressEvent(QMouseEvent *event) {
 void SaturationValue::setSatVal(const QPoint &pos) {
     int s = std::clamp(pos.x() - indicatorSize, 0, svSize1);
     int v = std::clamp(svSize1 - (pos.y() - indicatorSize), 0, svSize1);
-    color.setSatVal(s / svSizeF1, v / svSizeF1);
+    color.setSatVal(s / svSizeD1, v / svSizeD1);
 }
 
 void SaturationValue::mouseReleaseEvent(QMouseEvent *event) {
