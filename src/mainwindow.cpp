@@ -4,19 +4,28 @@
 #include "mainwindow.h"
 #include "palette.h"
 #include "rgbsliders.h"
-#include "rgbspinners.h"
+#include "component_spinners.h"
 #include "satval.h"
 
 #include <QtWidgets>
 
-static QHBoxLayout *mkRgbBox(MainWindow *win, RgbSlider *slider, RgbSpinner *spinner, const QString &text) {
+static QHBoxLayout *mkRgbBox(MainWindow *win, RgbSlider *slider, RgbSpinner *spinner, QChar c) {
     auto box = new QHBoxLayout();
     box->setSpacing(3);
     box->addStretch();
     box->addWidget(slider);
-    box->addWidget(new RgbLabel(win, text));
+    box->addWidget(new CmpLabel(win, c));
     box->addWidget(spinner);
     box->addSpacing(indicatorSize);
+    return box;
+}
+
+static QHBoxLayout *mkHsvBox(MainWindow *win, HsvSpinner *spinner, QChar c) {
+    auto box = new QHBoxLayout();
+    box->setSpacing(3);
+    box->addWidget(new CmpLabel(win, c));
+    box->addWidget(spinner);
+    box->addStretch();
     return box;
 }
 
@@ -33,13 +42,22 @@ MainWindow::MainWindow()
     setAutoFillBackground(true);
 
     auto redSpinner = new RedSpinner(this, color);
-    auto redBox = mkRgbBox(this, redslider, redSpinner, QStringLiteral("R:"));
+    auto redBox = mkRgbBox(this, redslider, redSpinner, 'R');
 
     auto greenSpinner = new GreenSpinner(this, color);
-    auto greenBox = mkRgbBox(this, greenslider, greenSpinner, QStringLiteral("G:"));
+    auto greenBox = mkRgbBox(this, greenslider, greenSpinner, 'G');
 
     auto blueSpinner = new BlueSpinner(this, color);
-    auto blueBox = mkRgbBox(this, blueslider, blueSpinner, QStringLiteral("B:"));
+    auto blueBox = mkRgbBox(this, blueslider, blueSpinner, 'B');
+
+    auto hueSpinner = new HueSpinner(this, color);
+    auto hueBox = mkHsvBox(this, hueSpinner, 'H');
+
+    auto satSpinner = new SatSpinner(this, color);
+    auto satBox = mkHsvBox(this, satSpinner, 'S');
+
+    auto valSpinner = new ValSpinner(this, color);
+    auto valBox = mkHsvBox(this ,valSpinner, 'V');
 
     auto stdPalette  = new Palette(this, QStringLiteral("Standard Palette"), color, stdPalColors, stdPalCount);
     auto userPalette = new Palette(this, QStringLiteral("User Palette"), color);
@@ -60,6 +78,9 @@ MainWindow::MainWindow()
     grid->addLayout(redBox, 1, 0);
     grid->addLayout(greenBox, 2, 0);
     grid->addLayout(blueBox, 3, 0);
+    grid->addLayout(hueBox, 1, 2);
+    grid->addLayout(satBox, 2, 2);
+    grid->addLayout(valBox, 3, 2);
     grid->addLayout(vbox, 0, 2);
     setLayout(grid);
 
@@ -71,15 +92,20 @@ MainWindow::MainWindow()
     connect(&color, &Color::changed, greenSpinner, &GreenSpinner::colorChanged);
     connect(&color, &Color::changed, blueslider, &BlueSlider::colorChanged);
     connect(&color, &Color::changed, blueSpinner, &BlueSpinner::colorChanged);
+    connect(&color, &Color::changed, hueSpinner, &HueSpinner::colorChanged);
+    connect(&color, &Color::changed, satSpinner, &SatSpinner::colorChanged);
+    connect(&color, &Color::changed, valSpinner, &ValSpinner::colorChanged);
     color.setHue(240.0f);
 
     satval->setFocus();
 }
 
 
-RgbLabel::RgbLabel(QWidget *parent, const QString &text)
+CmpLabel::CmpLabel(QWidget *parent, QChar c)
     : QLabel(parent)
 {
+    QString text(c);
+    text.append(':');
     setText(text);
     setAlignment(Qt::AlignRight);
     setMinimumWidth(rgbLabelWidth);

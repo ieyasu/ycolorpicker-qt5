@@ -3,6 +3,7 @@
 
 #include "color.h"
 
+#include <QChar>
 #include <QLabel>
 #include <QWidget>
 
@@ -26,10 +27,10 @@ private:
     BlueSlider *blueslider;
 };
 
-class RgbLabel : public QLabel {
+class CmpLabel : public QLabel {
     Q_OBJECT
 public:
-    RgbLabel(QWidget *parent, const QString &text);
+    CmpLabel(QWidget *parent, QChar c);
 };
 
 #endif // MAINWINDOW_H
