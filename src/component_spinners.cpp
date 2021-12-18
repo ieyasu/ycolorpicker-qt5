@@ -54,6 +54,7 @@ HsvSpinner::HsvSpinner(QWidget *parent, Color &c, double max, double step)
 {
     setMaximum(max);
     setSingleStep(step);
+    setMinimumWidth(74);
 }
 
 // ---------------------------------------------------------------------
