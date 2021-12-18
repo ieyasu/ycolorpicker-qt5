@@ -14,11 +14,7 @@ RgbSpinner::RgbSpinner(QWidget *parent, Color &c)
 RedSpinner::RedSpinner(QWidget *parent, Color &c)
     : RgbSpinner(parent, c)
 {
-    connect(this, SIGNAL(valueChanged(int)), this, SLOT(changed(int)));
-}
-
-void RedSpinner::changed(int x) {
-    color.setR(x);
+    connect(this, SIGNAL(valueChanged(int)), &c, SLOT(setR(int)));
 }
 
 void RedSpinner::colorChanged() {
@@ -30,11 +26,7 @@ void RedSpinner::colorChanged() {
 GreenSpinner::GreenSpinner(QWidget *parent, Color &c)
     : RgbSpinner(parent, c)
 {
-    connect(this, SIGNAL(valueChanged(int)), this, SLOT(changed(int)));
-}
-
-void GreenSpinner::changed(int x) {
-    color.setG(x);
+    connect(this, SIGNAL(valueChanged(int)), &c, SLOT(setG(int)));
 }
 
 void GreenSpinner::colorChanged() {
@@ -46,11 +38,7 @@ void GreenSpinner::colorChanged() {
 BlueSpinner::BlueSpinner(QWidget *parent, Color &c)
     : RgbSpinner(parent, c)
 {
-    connect(this, SIGNAL(valueChanged(int)), this, SLOT(changed(int)));
-}
-
-void BlueSpinner::changed(int x) {
-    color.setB(x);
+    connect(this, SIGNAL(valueChanged(int)), &c, SLOT(setB(int)));
 }
 
 void BlueSpinner::colorChanged() {
@@ -74,11 +62,7 @@ HueSpinner::HueSpinner(QWidget *parent, Color &c)
     : HsvSpinner(parent, c, 359, 1)
 {
     setDecimals(1);
-    connect(this, SIGNAL(valueChanged(double)), this, SLOT(changed(double)));
-}
-
-void HueSpinner::changed(double x) {
-    color.setHue(x);
+    connect(this, SIGNAL(valueChanged(double)), &c, SLOT(setHue(double)));
 }
 
 void HueSpinner::colorChanged() {
@@ -91,11 +75,7 @@ SatSpinner::SatSpinner(QWidget *parent, Color &c)
     : HsvSpinner(parent, c, 1, 0.0025)
 {
     setDecimals(3);
-    connect(this, SIGNAL(valueChanged(double)), this, SLOT(changed(double)));
-}
-
-void SatSpinner::changed(double x) {
-    color.setSat(x);
+    connect(this, SIGNAL(valueChanged(double)), &c, SLOT(setSat(double)));
 }
 
 void SatSpinner::colorChanged() {
@@ -108,11 +88,7 @@ ValSpinner::ValSpinner(QWidget *parent, Color &c)
     : HsvSpinner(parent, c, 1, 0.0025)
 {
     setDecimals(3);
-    connect(this, SIGNAL(valueChanged(double)), this, SLOT(changed(double)));
-}
-
-void ValSpinner::changed(double x) {
-    color.setVal(x);
+    connect(this, SIGNAL(valueChanged(double)), &c, SLOT(setVal(double)));
 }
 
 void ValSpinner::colorChanged() {

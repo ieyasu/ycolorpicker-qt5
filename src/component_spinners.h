@@ -21,7 +21,6 @@ public:
     RedSpinner(QWidget *parent, Color &c);
 
 public Q_SLOTS:
-    void changed(int x);
     void colorChanged();
 };
 
@@ -31,7 +30,6 @@ public:
     GreenSpinner(QWidget *parent, Color &c);
 
 public Q_SLOTS:
-    void changed(int x);
     void colorChanged();
 };
 
@@ -41,7 +39,6 @@ public:
     BlueSpinner(QWidget *parent, Color &c);
 
 public Q_SLOTS:
-    void changed(int x);
     void colorChanged();
 };
 
@@ -62,7 +59,6 @@ public:
     HueSpinner(QWidget *parent, Color &c);
 
 public Q_SLOTS:
-    void changed(double x);
     void colorChanged();
 };
 
@@ -72,7 +68,6 @@ public:
     SatSpinner(QWidget *parent, Color &c);
 
 public Q_SLOTS:
-    void changed(double x);
     void colorChanged();
 };
 
@@ -82,7 +77,6 @@ public:
     ValSpinner(QWidget *parent, Color &c);
 
 public Q_SLOTS:
-    void changed(double x);
     void colorChanged();
 };
 
