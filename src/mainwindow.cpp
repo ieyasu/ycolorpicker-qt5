@@ -23,8 +23,10 @@ static QHBoxLayout *mkRgbBox(MainWindow *win, RgbSlider *slider, RgbSpinner *spi
 
 static QHBoxLayout *mkHsvBox(MainWindow *win, HsvSpinner *spinner, QChar c) {
     auto box = new QHBoxLayout();
-    box->setSpacing(3);
+    box->setSpacing(0);
+    box->addSpacing(indicatorSize);
     box->addWidget(new CmpLabel(win, c));
+    box->addSpacing(3);
     box->addWidget(spinner);
     box->addStretch();
     return box;
@@ -84,9 +86,9 @@ MainWindow::MainWindow()
     grid->addLayout(redBox, 1, 0);
     grid->addLayout(greenBox, 2, 0);
     grid->addLayout(blueBox, 3, 0);
-    grid->addLayout(hueBox, 1, 2);
-    grid->addLayout(satBox, 2, 2);
-    grid->addLayout(valBox, 3, 2);
+    grid->addLayout(hueBox, 1, 1, 1, 2);
+    grid->addLayout(satBox, 2, 1, 1, 2);
+    grid->addLayout(valBox, 3, 1, 1, 2);
     grid->addLayout(vbox, 0, 2);
     setLayout(grid);
 
