@@ -2,6 +2,8 @@
 #ifndef COLOR_H
 #define COLOR_H
 
+#include "colorpicker.h"
+
 #include <QColor>
 #include <QObject>
 
@@ -12,6 +14,8 @@ public:
     Color(int red, int green, int blue, QObject *parent = nullptr);
     Color(float hue, float sat, float val, QObject *parent = nullptr);
 
+    Color &operator=(const Color &c);
+
     int getR() const { return r; }
     int getG() const { return g; }
     int getB() const { return b; }
@@ -20,6 +24,7 @@ public:
     float getVal() const { return v; }
     QColor toQColor() const { return qRgb(r, g, b); }
 
+    void setRGB(const RgbTriple &triple);
     void setSatVal(float sat, float val);
 
 public slots:

@@ -23,6 +23,18 @@ Color::Color(float hue, float sat, float val, QObject *parent)
     hsv2rgb();
 }
 
+Color &Color::operator=(const Color &c) {
+    bool ch = false;
+    if (c.r != r) { r = c.r; ch = true; }
+    if (c.g != g) { g = c.g; ch = true; }
+    if (c.b != b) { b = c.b; ch = true; }
+    if (c.h != h) { h = c.h; ch = true; }
+    if (c.s != s) { s = c.s; ch = true; }
+    if (c.v != v) { v = c.v; ch = true; }
+    if (ch) emit changed();
+    return *this;
+}
+
 void Color::setR(int red) {
     red = std::clamp(red, 0, 255);
     if (red != r) { r = red; rgb2hsv(); }
@@ -69,6 +81,14 @@ void Color::setSatVal(float sat, float val) {
     val = std::clamp(val, 0.0f, 1.0f);
     if (val != v) { v = val; changed = true; }
     if (changed) hsv2rgb();
+}
+
+void Color::setRGB(const RgbTriple &triple) {
+    bool changed = false;
+    if (triple.r != r) { r = triple.r; changed = true; }
+    if (triple.g != g) { g = triple.g; changed = true; }
+    if (triple.b != b) { b = triple.b; changed = true; }
+    if (changed) rgb2hsv();
 }
 
 // https://en.wikipedia.org/wiki/HSL_and_HSV#Color_conversion_formulae

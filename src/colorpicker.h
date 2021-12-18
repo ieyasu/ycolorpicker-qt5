@@ -22,7 +22,12 @@ static constexpr int rgbSize1 = rgbSize - 1;
 static constexpr int rgbWidth = rgbSize + 2 * indicatorSize;
 static constexpr int barHeight = 12;
 static constexpr int rgbHeight = barHeight + 2 * indicatorSize;
-
 static constexpr int rgbLabelWidth = 18;
+
+// color palette
+static constexpr int cbSize = 24;
+static constexpr int cbSize1 = cbSize - 1;
+
+struct RgbTriple { int r, g, b; };
 
 #endif // COLORPICKER_H

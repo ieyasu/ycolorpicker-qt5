@@ -2,6 +2,7 @@
 #include "color.h"
 #include "hueslider.h"
 #include "mainwindow.h"
+#include "palette.h"
 #include "rgbsliders.h"
 #include "rgbspinners.h"
 #include "satval.h"
@@ -40,6 +41,15 @@ MainWindow::MainWindow()
     auto blueSpinner = new BlueSpinner(this, color);
     auto blueBox = mkRgbBox(this, blueslider, blueSpinner, QStringLiteral("B:"));
 
+    auto stdPalette  = new Palette(this, QStringLiteral("Standard Palette"), color, stdPalColors, stdPalCount);
+    auto userPalette = new Palette(this, QStringLiteral("User Palette"), color);
+
+    auto vbox = new QVBoxLayout();
+    vbox->setSpacing(spacing);
+    vbox->addWidget(stdPalette);
+    vbox->addWidget(userPalette);
+    vbox->addStretch();
+
     auto grid = new QGridLayout(this);
     constexpr int m = margin - indicatorSize;
     grid->setContentsMargins(m, m, m, m);
@@ -50,6 +60,7 @@ MainWindow::MainWindow()
     grid->addLayout(redBox, 1, 0);
     grid->addLayout(greenBox, 2, 0);
     grid->addLayout(blueBox, 3, 0);
+    grid->addLayout(vbox, 0, 2);
     setLayout(grid);
 
     connect(&color, &Color::changed, satval, &SaturationValue::colorChanged);

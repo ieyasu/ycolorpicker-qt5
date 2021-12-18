@@ -3,6 +3,7 @@ set(ycolorpicker_SRCS
     hueslider.cpp
     main.cpp
     mainwindow.cpp
+    palette.cpp
     rgbsliders.cpp
     rgbspinners.cpp
     satval.cpp
