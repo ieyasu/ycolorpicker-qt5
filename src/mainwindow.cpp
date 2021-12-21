@@ -64,6 +64,7 @@ MainWindow::MainWindow()
 
     auto stdPalette  = new Palette(this, QStringLiteral("Standard Palette"), color, stdPalColors, stdPalCount);
     auto userPalette = new Palette(this, QStringLiteral("User Palette"), color);
+    userPalette->setDroppable();
 
     auto currColor = new CurrentColorDisplay(this, color);
 

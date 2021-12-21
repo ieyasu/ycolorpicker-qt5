@@ -3,6 +3,7 @@
 #include "currcolordisplay.h"
 
 #include <QtGui>
+#include <QtWidgets>
 
 constexpr int swapSize = fgbgSize - fgbgOff - 3;
 constexpr int bwSize = swapSize/2;
@@ -19,9 +20,12 @@ CurrentColorDisplay::CurrentColorDisplay(QWidget *parent, Color &c)
       fgRect(pd, pd, fgbgSize, fgbgSize),
       bgRect(pd + fgbgSize - fgbgOff, pd + fgbgSize - fgbgOff, fgbgSize, fgbgSize),
       swapFgBgRect(pd + fgbgAreaSize - swapSize, pd, swapSize, swapSize),
-      bwRect(pd, pd + fgbgAreaSize - swapSize + 1, swapSize, swapSize)
+      bwRect(pd, pd + fgbgAreaSize - swapSize + 1, swapSize, swapSize),
+      currClrRect(currClrX1, pd, currClrAreaSize, currClrAreaSize),
+      downOver(OVER_NONE)
 {
     setMinimumSize(currcdWidth, currcdHeight);
+    setAcceptDrops(true);
 }
 
 void CurrentColorDisplay::paintEvent(QPaintEvent *event) {
@@ -56,7 +60,7 @@ void CurrentColorDisplay::paintEvent(QPaintEvent *event) {
     // current color area
     painter.setPen(Qt::white);
     painter.setBrush(color.toQColor());
-    painter.drawRect(currClrX1, pd, currClrAreaSize, currClrAreaSize);
+    painter.drawRect(currClrRect);
     int x = currClrX1 + currClrAreaSize - currClrSize;
     painter.fillRect(x, pd+1, currClrSize, currClrSize, fgColor.toQColor());
     sz = currClrSize / 3;
@@ -100,6 +104,97 @@ void CurrentColorDisplay::paintEvent(QPaintEvent *event) {
     painter.drawText(box, Qt::AlignCenter, text);
 }
 
+void CurrentColorDisplay::dragEnterEvent(QDragEnterEvent *event) {
+    event->acceptProposedAction();
+}
+
+void CurrentColorDisplay::dragMoveEvent(QDragMoveEvent *event) {
+    if (event->mimeData()->hasColor()) {
+        QRect r = event->answerRect();
+        if (fgRect.intersects(r) || bgRect.intersects(r) || currClrRect.intersects(r)) {
+            event->acceptProposedAction();
+        }
+    }
+}
+
+void CurrentColorDisplay::dropEvent(QDropEvent *event) {
+    auto data = event->mimeData();
+    auto pa = event->proposedAction();
+    if (!data->hasColor() || (pa != Qt::MoveAction && pa != Qt::CopyAction)) return;
+
+    auto c = qvariant_cast<QColor>(data->colorData());
+    if (fgRect.contains(event->pos())) {
+        fgColor = c;
+    } else if (bgRect.contains(event->pos())) {
+        bgColor = c;
+    } else if (currClrRect.contains(event->pos())) {
+        color = c;
+    }
+    update(rect());
+}
+
+void CurrentColorDisplay::leaveEvent(QEvent *event) {
+    if (downOver != OVER_NONE) startDrag();
+}
+
+void CurrentColorDisplay::mouseMoveEvent(QMouseEvent *event) {
+    if ((event->pos() - pt).manhattanLength() >= QApplication::startDragDistance() &&
+        downOver != OVER_NONE) startDrag();
+}
+
+void CurrentColorDisplay::mousePressEvent(QMouseEvent *event) {
+    if ((event->buttons() & Qt::LeftButton) == 0) return;
+
+    if (fgRect.contains(event->pos())) {
+        downOver = OVER_FG;
+        pt = event->pos();
+    } else if (bgRect.contains(event->pos())) {
+        downOver = OVER_BG;
+        pt = event->pos();
+    } else if (currClrRect.contains(event->pos())) {
+        downOver = OVER_CURR;
+        pt = event->pos();
+    } else if (bwRect.contains(event->pos())) { // reset fg/bg to black/white
+        fgColor = black;
+        bgColor = white;
+        update(rect());
+    } else if (swapFgBgRect.contains(event->pos())) { // swap bg/fg colors
+        Color tmp = fgColor;
+        fgColor = bgColor;
+        bgColor = tmp;
+        update(rect());
+    }
+}
+
+void CurrentColorDisplay::mouseReleaseEvent(QMouseEvent *event) {
+    if (downOver != OVER_NONE && (event->buttons() & Qt::LeftButton) == 0) {
+        downOver = OVER_NONE;
+    }
+}
+
 void CurrentColorDisplay::colorChanged() {
     update(rect()); // repaint
+}
+
+void CurrentColorDisplay::startDrag() {
+    auto data = new QMimeData;
+    switch (downOver) {
+    case OVER_NONE:
+        abort();
+        break;
+    case OVER_FG:
+        data->setColorData(fgColor.toQColor());
+        break;
+    case OVER_BG:
+        data->setColorData(bgColor.toQColor());
+        break;
+    case OVER_CURR:
+        data->setColorData(color.toQColor());
+        break;
+    }
+    auto drag = new QDrag(this);
+    drag->setMimeData(data);
+    drag->exec(Qt::CopyAction | Qt::MoveAction);
+
+    downOver = OVER_NONE;
 }

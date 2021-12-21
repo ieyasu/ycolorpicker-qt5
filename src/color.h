@@ -15,6 +15,7 @@ public:
     Color(const Color &c);
 
     Color &operator=(const Color &c);
+    Color &operator=(const QColor &c);
 
     int getR() const { return r; }
     int getG() const { return g; }

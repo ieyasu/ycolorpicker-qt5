@@ -54,6 +54,12 @@ Palette::Palette(
     }
 }
 
+void Palette::setDroppable() {
+    for (auto it = colors.begin(); it != colors.end(); ++it) {
+        (*it)->setAcceptDrops(true);
+    }
+}
+
 // *********************************************************************
 
 ColorBox::ColorBox(QWidget *parent, Color &ac)
@@ -64,6 +70,22 @@ ColorBox::ColorBox(QWidget *parent, Color &ac)
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 }
 
+void ColorBox::dragEnterEvent(QDragEnterEvent *event) {
+    if (event->mimeData()->hasColor()) {
+        event->acceptProposedAction();
+    }
+}
+
+void ColorBox::dropEvent(QDropEvent *event) {
+    auto data = event->mimeData();
+    auto pa = event->proposedAction();
+    if (data->hasColor() && (pa == Qt::MoveAction || pa == Qt::CopyAction)) {
+        event->acceptProposedAction();
+        color = qvariant_cast<QColor>(data->colorData());
+        update(rect());
+    }
+}
+
 void ColorBox::paintEvent(QPaintEvent *event) {
     QPainter painter(this);
     painter.setPen(Qt::white);
@@ -71,8 +93,28 @@ void ColorBox::paintEvent(QPaintEvent *event) {
     painter.drawRect(0, 0, cbSize1, cbSize1);
 }
 
+void ColorBox::leaveEvent(QEvent *event) {
+    if (leftDown) startDrag();
+}
+
+void ColorBox::mouseMoveEvent(QMouseEvent *event) {
+    if ((event->pos() - pt).manhattanLength() >= QApplication::startDragDistance() &&
+        leftDown) startDrag();
+}
+
+void ColorBox::startDrag() {
+    leftDown = false;
+
+    auto drag = new QDrag(this);
+    auto data = new QMimeData;
+    data->setColorData(color.toQColor());
+    drag->setMimeData(data);
+    drag->exec(Qt::CopyAction | Qt::MoveAction);
+}
+
 void ColorBox::mousePressEvent(QMouseEvent *event) {
     if (event->buttons() & Qt::LeftButton) {
+        pt = event->pos();
         leftDown = true;
     }
 }
