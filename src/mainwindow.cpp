@@ -76,7 +76,7 @@ MainWindow::MainWindow()
     vbox->addSpacing(1);
 
     auto grid = new QGridLayout(this);
-    grid->setSizeConstraint(QLayout::SetFixedSize);
+    grid->setSizeConstraint(QLayout::SetFixedSize); // no resize window
     constexpr int m = margin - indicatorSize;
     grid->setContentsMargins(m, m, m, m);
     grid->setHorizontalSpacing(spacing);
@@ -104,7 +104,8 @@ MainWindow::MainWindow()
     connect(&color, &Color::changed, satSpinner, &SatSpinner::colorChanged);
     connect(&color, &Color::changed, valSpinner, &ValSpinner::colorChanged);
     connect(&color, &Color::changed, currColor, &CurrentColorDisplay::colorChanged);
-    color.setHue(240.0f);
+
+    color.setHue(204.0f);
 
     satval->setFocus();
 }
