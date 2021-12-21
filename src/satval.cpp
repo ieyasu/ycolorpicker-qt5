@@ -7,6 +7,7 @@
 #include <QtGui>
 
 #include <algorithm>
+#include <math.h>
 
 static constexpr double svSizeD1 = svSize1;
 
@@ -26,11 +27,20 @@ void SaturationValue::paintEvent(QPaintEvent *event) {
     painter.drawPixmap(QPoint(indicatorSize, indicatorSize), square);
 
     // circle indicator
+    double sat = color.getSat(), val = color.getVal();
+    double v = 1 - color.getVal();
+    double hue = color.getHue();
+    int u;
+    if (hue < 25 || hue > 219) { // dark hue - use distance from top-left corner
+        double dist = sqrt(sat * sat + v * v);
+        u = (dist < 0.5) ? 0 : 255;
+    } else { // light hue - use line
+        u = (v < 0.5 - 0.15 * sat) ? 0 : 255;
+    }
+    painter.setPen(qRgb(u, u, u));
     painter.setRenderHint(QPainter::Antialiasing);
-    auto pen = (color.getSat() < 0.45f && color.getVal() > 0.55f) ? Qt::black : Qt::white;
-    painter.setPen(pen);
-    int x = static_cast<int>(color.getSat() * svSizeD1);
-    int y = static_cast<int>((1 - color.getVal()) * svSizeD1);
+    int x = static_cast<int>(sat * svSizeD1);
+    int y = static_cast<int>(v * svSizeD1);
     int sz = 2 * indicatorSize + 1;
     painter.drawArc(x, y, sz, sz, 0, 5760);
 }
