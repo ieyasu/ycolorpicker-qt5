@@ -75,6 +75,17 @@ void Color::setSatVal(double sat, double val) {
     if (changed) hsv2rgb();
 }
 
+void Color::setRGB(int red, int grn, int blu) {
+    bool ch = false;
+    red = std::clamp(red, 0, 255);
+    if (red != r) { r = red; ch = true; }
+    grn = std::clamp(grn, 0, 255);
+    if (grn != g) { g = grn; ch = true; }
+    blu = std::clamp(blu, 0, 255);
+    if (blu != b) { b = blu; ch = true; }
+    if (ch) rgb2hsv();
+}
+
 void Color::setRGB(const RgbTriple &triple) {
     bool changed = false;
     if (triple.r != r) { r = triple.r; changed = true; }

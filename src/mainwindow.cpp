@@ -1,5 +1,6 @@
 #include "colorpicker.h"
 #include "color.h"
+#include "color_formats.h"
 #include "currcolordisplay.h"
 #include "hueslider.h"
 #include "mainwindow.h"
@@ -68,6 +69,20 @@ MainWindow::MainWindow()
 
     auto currColor = new CurrentColorDisplay(this, color);
 
+    auto lbl = new QLabel(this);
+    lbl->setText(QStringLiteral("Hex:"));
+    hueBox->addWidget(lbl);
+    auto hexFmt = new HexFmt(this, color);
+    hueBox->addWidget(hexFmt);
+    hueBox->addSpacing(indicatorSize);
+
+    lbl = new QLabel(this);
+    lbl->setText(QStringLiteral("RGB:"));
+    satBox->addWidget(lbl);
+    auto rgbFmt = new RgbFmt(this, color);
+    satBox->addWidget(rgbFmt);
+    satBox->addSpacing(indicatorSize);
+
     auto vbox = new QVBoxLayout();
     vbox->setSpacing(spacing);
     vbox->addWidget(stdPalette);
@@ -105,6 +120,8 @@ MainWindow::MainWindow()
     connect(&color, &Color::changed, satSpinner, &SatSpinner::colorChanged);
     connect(&color, &Color::changed, valSpinner, &ValSpinner::colorChanged);
     connect(&color, &Color::changed, currColor, &CurrentColorDisplay::colorChanged);
+    connect(&color, &Color::changed, hexFmt, &HexFmt::colorChanged);
+    connect(&color, &Color::changed, rgbFmt, &RgbFmt::colorChanged);
 
     color.setHue(204.0f);
 

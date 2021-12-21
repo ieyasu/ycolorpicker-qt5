@@ -177,24 +177,26 @@ void CurrentColorDisplay::colorChanged() {
 }
 
 void CurrentColorDisplay::startDrag() {
-    auto data = new QMimeData;
-    switch (downOver) {
+    auto over = downOver;
+    downOver = OVER_NONE; // prevent other events from starting drag
+    QColor c;
+    switch (over) {
     case OVER_NONE:
         abort();
         break;
     case OVER_FG:
-        data->setColorData(fgColor.toQColor());
+        c = fgColor.toQColor();
         break;
     case OVER_BG:
-        data->setColorData(bgColor.toQColor());
+        c = bgColor.toQColor();
         break;
     case OVER_CURR:
-        data->setColorData(color.toQColor());
+        c = color.toQColor();
         break;
     }
     auto drag = new QDrag(this);
+    auto data = new QMimeData;
+    data->setColorData(c);
     drag->setMimeData(data);
     drag->exec(Qt::CopyAction | Qt::MoveAction);
-
-    downOver = OVER_NONE;
 }

@@ -25,6 +25,7 @@ public:
     double getVal() const { return v; }
     QColor toQColor() const { return qRgb(r, g, b); }
 
+    void setRGB(int red, int green, int blue);
     void setRGB(const RgbTriple &triple);
     void setSatVal(double sat, double val);
 
