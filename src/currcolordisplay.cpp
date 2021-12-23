@@ -1,6 +1,7 @@
 #include "colorpicker.h"
 #include "color.h"
 #include "currcolordisplay.h"
+#include "sample_button.h"
 
 #include <QtGui>
 #include <QtWidgets>
@@ -26,6 +27,9 @@ CurrentColorDisplay::CurrentColorDisplay(QWidget *parent, Color &c)
 {
     setMinimumSize(currcdWidth, currcdHeight);
     setAcceptDrops(true);
+
+    auto sample = new SampleButton(this, c);
+    sample->move(0, pd + currClrAreaSize - currClrSize);
 }
 
 void CurrentColorDisplay::paintEvent(QPaintEvent *event) {

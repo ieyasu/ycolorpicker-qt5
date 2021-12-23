@@ -1,6 +1,8 @@
 #ifndef CURRCOLORDISPLAY_H
 #define CURRCOLORDISPLAY_H
 
+#include "color.h"
+
 #include <QPoint>
 #include <QRect>
 #include <QWidget>
