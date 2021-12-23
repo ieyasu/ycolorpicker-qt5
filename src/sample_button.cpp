@@ -8,9 +8,10 @@ SampleButton::SampleButton(QWidget *parent, Color &c)
     : ImageButton(parent, ":/images/dropper_btn.png"),
       color(c), grabbing(false)
 {
+    connect(this, SIGNAL(clicked()), this, SLOT(startGrab()));
 }
 
-void SampleButton::clicked() {
+void SampleButton::startGrab() {
     QCursor cursor(QPixmap(":/images/dropper_cur.png"), 8, 19);
     grabMouse(cursor);
     grabbing = true;

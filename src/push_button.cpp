@@ -30,11 +30,9 @@ void PushButton::mouseReleaseEvent(QMouseEvent *event) {
     if (leftDown && (event->buttons() & Qt::LeftButton) == 0) {
         leftDown = false;
         update(rect());
-        if (rect().contains(event->pos())) clicked();
+        if (rect().contains(event->pos())) emit clicked();
     }
 }
-
-void PushButton::clicked() {}
 
 
 
@@ -68,5 +66,7 @@ void ImageButton::paintEvent(QPaintEvent *event) {
         painter.drawLines(lines, 4);
     }
 
-    painter.drawPixmap(1, 1, pixmap);
+    int x = (width() - pixmap.width()) / 2;
+    int y = (height() - pixmap.height()) / 2;
+    painter.drawPixmap(x, y, pixmap);
 }

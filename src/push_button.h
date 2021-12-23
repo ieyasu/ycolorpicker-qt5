@@ -12,12 +12,14 @@ class PushButton : public QWidget {
 public:
     PushButton(QWidget *parent);
 
+signals:
+    void clicked();
+
 protected:
     virtual void enterEvent(QEvent *event) override;
     virtual void leaveEvent(QEvent *event) override;
     virtual void mousePressEvent(QMouseEvent *event) override;
     virtual void mouseReleaseEvent(QMouseEvent *event) override;
-    virtual void clicked();
 
     bool leftDown;
     bool hover;

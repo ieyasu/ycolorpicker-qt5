@@ -13,8 +13,10 @@ public:
 
 protected:
     virtual void mousePressEvent(QMouseEvent *event) override;
-    virtual void clicked();
     void readPixel();
+
+protected slots:
+    void startGrab();
 
 private:
     Color &color;
