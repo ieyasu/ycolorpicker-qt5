@@ -12,8 +12,8 @@ constexpr int pd = indicatorSize;
 constexpr int currClrX1 = pd + (cbSize + spacing) * 2;
 constexpr int currClrSize = cbSize * 2 + spacing - 1;
 
-static Color white(255, 255, 255);
-static Color black;
+static QColor white(255, 255, 255);
+static QColor black(0, 0, 0);
 
 CurrentColorDisplay::CurrentColorDisplay(QWidget *parent, Color &c)
     : QWidget(parent), color(c),

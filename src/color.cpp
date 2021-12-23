@@ -18,6 +18,12 @@ Color::Color(double hue, double sat, double val)
 
 Color::Color(const Color &c) : r(c.r), g(c.g), b(c.b), h(c.h), s(c.s), v(c.v) {}
 
+Color::Color(const QColor &c)
+    : r(c.red()), g(c.green()), b(c.blue())
+{
+    rgb2hsv();
+}
+
 Color &Color::operator=(const QColor &c)
 {
     bool ch = false;
