@@ -5,14 +5,12 @@
 #include <QtWidgets>
 
 SampleButton::SampleButton(QWidget *parent, Color &c)
-    : QPushButton(QIcon(":/images/dropper_btn.png"), "", parent),
+    : ImageButton(parent, ":/images/dropper_btn.png"),
       color(c), grabbing(false)
 {
-    connect(this, SIGNAL(clicked(bool)), this, SLOT(startSample(bool)));
 }
 
-void SampleButton::startSample(bool checked) {
-    (void)checked;
+void SampleButton::clicked() {
     QCursor cursor(QPixmap(":/images/dropper_cur.png"), 8, 19);
     grabMouse(cursor);
     grabbing = true;
@@ -25,7 +23,7 @@ void SampleButton::mousePressEvent(QMouseEvent *event) {
         grabbing = false;
         readPixel();
     } else {
-        QPushButton::mousePressEvent(event);
+        ImageButton::mousePressEvent(event);
     }
 }
 

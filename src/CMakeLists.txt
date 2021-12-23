@@ -7,6 +7,7 @@ set(ycolorpicker_SRCS
     main.cpp
     mainwindow.cpp
     palette.cpp
+    push_button.cpp
     rgbsliders.cpp
     sample_button.cpp
     satval.cpp

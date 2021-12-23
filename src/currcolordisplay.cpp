@@ -29,7 +29,8 @@ CurrentColorDisplay::CurrentColorDisplay(QWidget *parent, Color &c)
     setAcceptDrops(true);
 
     auto sample = new SampleButton(this, c);
-    sample->move(0, pd + currClrAreaSize - currClrSize);
+    auto sz = sample->sizeHint();
+    sample->move(bgRect.right() - sz.width(), pd + currClrAreaSize - currClrSize);
 }
 
 void CurrentColorDisplay::paintEvent(QPaintEvent *event) {

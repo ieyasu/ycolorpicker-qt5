@@ -1,12 +1,8 @@
+#include "colorpicker.h"
 #include "mainwindow.h"
 
 #include <QtCore>
 #include <QtWidgets>
-
-const QColor mainBackground(70, 70, 70);
-const QColor editBackground(50, 50, 50);
-const QColor btnBackground(97, 97, 152);
-const QColor hilight(86, 131, 198);
 
 static void setPalette() {
     auto pal = QGuiApplication::palette();

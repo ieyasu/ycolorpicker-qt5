@@ -1,21 +1,19 @@
 #ifndef SAMPLE_BUTTON_H
 #define SAMPLE_BUTTON_H
 
-#include <QPushButton>
+#include "push_button.h"
 
 class Color;
 class QMouseEvent;
 
-class SampleButton : public QPushButton {
+class SampleButton : public ImageButton {
     Q_OBJECT
 public:
     SampleButton(QWidget *parent, Color &c);
 
-protected Q_SLOTS:
-    void startSample(bool);
-
 protected:
     virtual void mousePressEvent(QMouseEvent *event) override;
+    virtual void clicked();
     void readPixel();
 
 private:
