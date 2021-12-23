@@ -10,6 +10,7 @@ set(ycolorpicker_SRCS
     rgbsliders.cpp
     sample_button.cpp
     satval.cpp
+    resources.qrc
 )
 
 add_executable(ycolorpicker ${ycolorpicker_SRCS})
