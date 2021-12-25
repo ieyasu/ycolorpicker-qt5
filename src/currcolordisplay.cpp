@@ -30,7 +30,7 @@ CurrentColorDisplay::CurrentColorDisplay(QWidget *parent, Color &c)
 
     auto sample = new SampleButton(this, c);
     auto sz = sample->sizeHint();
-    sample->move(bgRect.right() - sz.width(), pd + currClrAreaSize - currClrSize);
+    sample->move(bgRect.right() - sz.width() + 2, pd + currClrAreaSize - currClrSize);
 }
 
 void CurrentColorDisplay::paintEvent(QPaintEvent *event) {
