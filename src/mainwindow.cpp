@@ -5,6 +5,7 @@
 #include "hueslider.h"
 #include "mainwindow.h"
 #include "palette.h"
+#include "push_button.h"
 #include "rgbsliders.h"
 #include "component_spinners.h"
 #include "satval.h"
@@ -74,6 +75,10 @@ MainWindow::MainWindow()
     hueBox->addWidget(lbl);
     auto hexFmt = new HexFmt(this, color);
     hueBox->addWidget(hexFmt);
+    hueBox->addSpacing(3);
+    auto clip = new ImageButton(this, ":images/to_clipboard.png");
+    connect(clip, SIGNAL(clicked()), hexFmt, SLOT(toClipboard()));
+    hueBox->addWidget(clip);
     hueBox->addSpacing(indicatorSize);
 
     lbl = new QLabel(this);
@@ -81,6 +86,10 @@ MainWindow::MainWindow()
     satBox->addWidget(lbl);
     auto rgbFmt = new RgbFmt(this, color);
     satBox->addWidget(rgbFmt);
+    satBox->addSpacing(3);
+    clip = new ImageButton(this, ":images/to_clipboard.png");
+    connect(clip, SIGNAL(clicked()), rgbFmt, SLOT(toClipboard()));
+    satBox->addWidget(clip);
     satBox->addSpacing(indicatorSize);
 
     auto vbox = new QVBoxLayout();

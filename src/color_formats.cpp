@@ -1,5 +1,7 @@
 #include "color_formats.h"
 
+#include <QClipboard>
+#include <QGuiApplication>
 #include <QRegularExpression>
 
 static QRegularExpression hexPat(QStringLiteral("^#?[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?$"));
@@ -43,6 +45,10 @@ void HexFmt::colorChanged() {
     setText(s.toUpper());
 }
 
+void HexFmt::toClipboard() {
+    QGuiApplication::clipboard()->setText(text());
+}
+
 
 
 static QRegularExpression rgbPat(QStringLiteral("^(\\d{1,3}),(\\d{1,3}),(\\d{1,3})$"));
@@ -75,4 +81,8 @@ void RgbFmt::colorChanged() {
     s += ',';
     s += n.setNum(color.getB());
     setText(s);
+}
+
+void RgbFmt::toClipboard() {
+    QGuiApplication::clipboard()->setText(text());
 }

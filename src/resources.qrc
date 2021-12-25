@@ -2,5 +2,6 @@
 <qresource>
   <file>images/dropper_btn.png</file>
   <file>images/dropper_cur.png</file>
+  <file>images/to_clipboard.png</file>
 </qresource>
 </RCC>

@@ -13,6 +13,7 @@ public:
 public Q_SLOTS:
     void colorChanged();
     void edited(const QString &);
+    void toClipboard();
 
 private:
     Color &color;
@@ -28,6 +29,7 @@ public:
 public Q_SLOTS:
     void colorChanged();
     void edited(const QString &);
+    void toClipboard();
 
 private:
     Color &color;
