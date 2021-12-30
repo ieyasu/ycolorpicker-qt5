@@ -37,7 +37,9 @@ void SaturationValue::paintEvent(QPaintEvent *event) {
     } else { // light hue - use line
         u = (v < 0.5 - 0.15 * sat) ? 0 : 255;
     }
-    painter.setPen(qRgb(u, u, u));
+    QPen pen(qRgb(u, u, u));
+    pen.setWidth(2);
+    painter.setPen(pen);
     painter.setRenderHint(QPainter::Antialiasing);
     int x = static_cast<int>(sat * svSizeD1);
     int y = static_cast<int>(v * svSizeD1);
