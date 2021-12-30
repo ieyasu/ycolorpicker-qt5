@@ -34,6 +34,19 @@ static QHBoxLayout *mkHsvBox(MainWindow *win, HsvSpinner *spinner, QChar c) {
     return box;
 }
 
+static ImageButton *addFmtField(MainWindow *win, QHBoxLayout *box, QWidget *fmt, const QString &text) {
+    auto lbl = new QLabel(win);
+    lbl->setText(text);
+    box->addWidget(lbl);
+    box->addSpacing(3);
+    box->addWidget(fmt);
+    box->addSpacing(3);
+    auto clip = new ImageButton(win, ":images/to_clipboard.png");
+    box->addWidget(clip);
+    box->addSpacing(indicatorSize);
+    return clip;
+}
+
 MainWindow::MainWindow()
     : QWidget(nullptr),
       color(0.0f, 0.8f, 0.8f),
@@ -70,27 +83,13 @@ MainWindow::MainWindow()
 
     auto currColor = new CurrentColorDisplay(this, color);
 
-    auto lbl = new QLabel(this);
-    lbl->setText(QStringLiteral("Hex:"));
-    hueBox->addWidget(lbl);
     auto hexFmt = new HexFmt(this, color);
-    hueBox->addWidget(hexFmt);
-    hueBox->addSpacing(3);
-    auto clip = new ImageButton(this, ":images/to_clipboard.png");
+    auto clip = addFmtField(this, satBox, hexFmt, QStringLiteral("Hex:"));
     connect(clip, SIGNAL(clicked()), hexFmt, SLOT(toClipboard()));
-    hueBox->addWidget(clip);
-    hueBox->addSpacing(indicatorSize);
 
-    lbl = new QLabel(this);
-    lbl->setText(QStringLiteral("RGB:"));
-    satBox->addWidget(lbl);
     auto rgbFmt = new RgbFmt(this, color);
-    satBox->addWidget(rgbFmt);
-    satBox->addSpacing(3);
-    clip = new ImageButton(this, ":images/to_clipboard.png");
+    clip = addFmtField(this, valBox, rgbFmt, QStringLiteral("RGB:"));
     connect(clip, SIGNAL(clicked()), rgbFmt, SLOT(toClipboard()));
-    satBox->addWidget(clip);
-    satBox->addSpacing(indicatorSize);
 
     auto vbox = new QVBoxLayout();
     vbox->setSpacing(spacing);

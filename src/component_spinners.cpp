@@ -7,6 +7,7 @@ RgbSpinner::RgbSpinner(QWidget *parent, Color &c)
 {
     setMinimum(0);
     setMaximum(rgbSize1);
+    setMinimumHeight(inputHeight);
 }
 
 // ---------------------------------------------------------------------
@@ -55,6 +56,7 @@ HsvSpinner::HsvSpinner(QWidget *parent, Color &c, double max, double step)
     setMaximum(max);
     setSingleStep(step);
     setMinimumWidth(74);
+    setMinimumHeight(inputHeight);
 }
 
 // ---------------------------------------------------------------------

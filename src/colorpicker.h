@@ -8,6 +8,7 @@ static constexpr int spacing = 12;
 static constexpr int margin = 20;
 static constexpr int indicatorSize = 7;
 static constexpr int indicatorSize1 = indicatorSize - 1;
+static constexpr int inputHeight = 26;
 
 // saturation/value square
 static constexpr int svSize = 360;

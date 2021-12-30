@@ -4,11 +4,15 @@
 #include <QGuiApplication>
 #include <QRegularExpression>
 
+static constexpr int fmtWidth = 96;
+
 static QRegularExpression hexPat(QStringLiteral("^#?[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?$"));
 
 HexFmt::HexFmt(QWidget *parent, Color &c)
     : QLineEdit(parent), color(c), inhibit(false)
 {
+    setFixedWidth(fmtWidth);
+    setMinimumHeight(inputHeight);
     connect(this, SIGNAL(textEdited(const QString &)), this, SLOT(edited(const QString &)));
 }
 
@@ -56,6 +60,8 @@ static QRegularExpression rgbPat(QStringLiteral("^(\\d{1,3}),(\\d{1,3}),(\\d{1,3
 RgbFmt::RgbFmt(QWidget *parent, Color &c)
     : QLineEdit(parent), color(c), inhibit(false)
 {
+    setFixedWidth(fmtWidth);
+    setMinimumHeight(inputHeight);
     connect(this, SIGNAL(textEdited(const QString &)), this, SLOT(edited(const QString &)));
 }
 
