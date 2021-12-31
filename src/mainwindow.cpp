@@ -148,6 +148,4 @@ CmpLabel::CmpLabel(QWidget *parent, QChar c)
     setMinimumWidth(rgbLabelWidth);
     setMaximumWidth(rgbLabelWidth);
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
-
 }
