@@ -1,5 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
+  <file>images/app-128.png</file>
   <file>images/dropper_btn.png</file>
   <file>images/dropper_cur.png</file>
   <file>images/to_clipboard.png</file>
