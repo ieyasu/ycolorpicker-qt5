@@ -42,6 +42,7 @@ static ImageButton *addFmtField(MainWindow *win, QHBoxLayout *box, QWidget *fmt,
     box->addWidget(fmt);
     box->addSpacing(3);
     auto clip = new ImageButton(win, ":images/to_clipboard.png");
+    clip->setToolTip(QStringLiteral("Copy to clipboard"));
     box->addWidget(clip);
     box->addSpacing(indicatorSize);
     return clip;

@@ -23,6 +23,7 @@ public Q_SLOTS:
     void colorChanged();
 
 protected:
+    virtual bool event(QEvent *event) override;
     virtual void dragEnterEvent(QDragEnterEvent *event) override;
     virtual void dragMoveEvent(QDragMoveEvent *event) override;
     virtual void dropEvent(QDropEvent *event) override;
@@ -41,6 +42,7 @@ private:
     QRect currClrRect;
     QPoint pt;
     CcdOver downOver;
+    CcdOver over;
 
     void startDrag();
 };

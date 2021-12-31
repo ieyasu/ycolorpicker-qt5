@@ -23,14 +23,16 @@ CurrentColorDisplay::CurrentColorDisplay(QWidget *parent, Color &c)
       swapFgBgRect(pd + fgbgAreaSize - swapSize, pd, swapSize, swapSize),
       bwRect(pd, pd + fgbgAreaSize - swapSize + 1, swapSize, swapSize),
       currClrRect(currClrX1, pd, currClrAreaSize, currClrAreaSize),
-      downOver(OVER_NONE)
+      downOver(OVER_NONE), over(OVER_NONE)
 {
     setMinimumSize(currcdWidth, currcdHeight);
     setAcceptDrops(true);
+    setMouseTracking(true);
 
     auto sample = new SampleButton(this, c);
     auto sz = sample->sizeHint();
     sample->move(bgRect.right() - sz.width() + 2, pd + currClrAreaSize - currClrSize);
+    sample->setToolTip(QStringLiteral("Pick a color somewhere on the screen"));
 }
 
 void CurrentColorDisplay::paintEvent(QPaintEvent *event) {
@@ -142,9 +144,43 @@ void CurrentColorDisplay::leaveEvent(QEvent *event) {
     if (downOver != OVER_NONE) startDrag();
 }
 
+bool CurrentColorDisplay::event(QEvent *event) {
+    if (event->type() == QEvent::ToolTip) {
+        auto helpEvent = static_cast<QHelpEvent *>(event);
+        auto pos = helpEvent->globalPos();
+        switch (over) {
+        case OVER_FG:
+            QToolTip::showText(pos, QStringLiteral("Foreground color - drop here to set"));
+            break;
+        case OVER_BG:
+            QToolTip::showText(pos, QStringLiteral("Background color - drop here to set"));
+            break;
+        case OVER_CURR:
+            QToolTip::showText(pos, QStringLiteral("Current color - drag somewhere to set"));
+            break;
+        default:
+            QToolTip::hideText();
+            event->ignore();
+            break;
+        }
+        return true;
+    }
+    return QWidget::event(event);
+}
+
 void CurrentColorDisplay::mouseMoveEvent(QMouseEvent *event) {
     if ((event->pos() - pt).manhattanLength() >= QApplication::startDragDistance() &&
         downOver != OVER_NONE) startDrag();
+
+    if (fgRect.contains(event->pos())) {
+        over = OVER_FG;
+    } else if (bgRect.contains(event->pos())) {
+        over = OVER_BG;
+    } else if (currClrRect.contains(event->pos())) {
+        over = OVER_CURR;
+    } else {
+        over = OVER_NONE;
+    }
 }
 
 void CurrentColorDisplay::mousePressEvent(QMouseEvent *event) {
@@ -159,15 +195,19 @@ void CurrentColorDisplay::mousePressEvent(QMouseEvent *event) {
     } else if (currClrRect.contains(event->pos())) {
         downOver = OVER_CURR;
         pt = event->pos();
-    } else if (bwRect.contains(event->pos())) { // reset fg/bg to black/white
-        fgColor = black;
-        bgColor = white;
-        update(rect());
-    } else if (swapFgBgRect.contains(event->pos())) { // swap bg/fg colors
-        Color tmp = fgColor;
-        fgColor = bgColor;
-        bgColor = tmp;
-        update(rect());
+    } else {
+        downOver = OVER_NONE;
+
+        if (bwRect.contains(event->pos())) { // reset fg/bg to black/white
+            fgColor = black;
+            bgColor = white;
+            update(rect());
+        } else if (swapFgBgRect.contains(event->pos())) { // swap bg/fg colors
+            Color tmp = fgColor;
+            fgColor = bgColor;
+            bgColor = tmp;
+            update(rect());
+        }
     }
 }
 

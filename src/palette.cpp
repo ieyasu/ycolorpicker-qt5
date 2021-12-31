@@ -57,6 +57,7 @@ Palette::Palette(
 void Palette::setDroppable() {
     for (auto it = colors.begin(); it != colors.end(); ++it) {
         (*it)->setAcceptDrops(true);
+        (*it)->setToolTip(QStringLiteral("Drop a color here to set"));
     }
 }
 
