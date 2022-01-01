@@ -50,22 +50,23 @@ static ImageButton *addFmtField(MainWindow *win, QHBoxLayout *box, QWidget *fmt,
 
 MainWindow::MainWindow()
     : QWidget(nullptr),
-      color(0.0f, 0.8f, 0.8f),
-      satval(new SaturationValue(this, color)),
-      hueslider(new HueSlider(this, color)),
-      redslider(new RedSlider(this, color)),
-      greenslider(new GreenSlider(this, color)),
-      blueslider(new BlueSlider(this, color))
+      color(0.0f, 0.8f, 0.8f)
 {
     setWindowTitle("Color Picker");
     setAutoFillBackground(true);
 
+    auto satval = new SaturationValue(this, color);
+    auto hueslider = new HueSlider(this, color);
+
+    auto redslider = new RedSlider(this, color);
     auto redSpinner = new RedSpinner(this, color);
     auto redBox = mkRgbBox(this, redslider, redSpinner, 'R');
 
+    auto greenslider = new GreenSlider(this, color);
     auto greenSpinner = new GreenSpinner(this, color);
     auto greenBox = mkRgbBox(this, greenslider, greenSpinner, 'G');
 
+    auto blueslider = new BlueSlider(this, color);
     auto blueSpinner = new BlueSpinner(this, color);
     auto blueBox = mkRgbBox(this, blueslider, blueSpinner, 'B');
 
@@ -79,8 +80,9 @@ MainWindow::MainWindow()
     auto valBox = mkHsvBox(this ,valSpinner, 'V');
 
     auto stdPalette  = new Palette(this, QStringLiteral("Standard Palette"), color, stdPalColors, stdPalCount);
-    auto userPalette = new Palette(this, QStringLiteral("User Palette"), color);
+    userPalette = new Palette(this, QStringLiteral("User Palette"), color);
     userPalette->setDroppable();
+    readUserPalette();
 
     auto currColor = new CurrentColorDisplay(this, color);
 
@@ -135,6 +137,82 @@ MainWindow::MainWindow()
     color.setHue(204.0f);
 
     satval->setFocus();
+}
+
+void MainWindow::closeEvent(QCloseEvent *event) {
+    if (!userPalette->anyChanged()) return; // nothing to save
+
+    // save user palette
+    auto path = paletteFile();
+    if (path.isEmpty()) return;
+    QSaveFile fout(path);
+    if (!fout.open(QIODevice::WriteOnly)) {
+        QMessageBox::critical(this, QStringLiteral("Error Opening User Palette"), fout.errorString());
+        return;
+    }
+
+    QString line;
+    for (int i = 0; i < userPalette->size(); i++) {
+        auto colorBox = userPalette->at(i);
+        if (!colorBox->isWhite()) {
+            line = QString("[%1] = #%2%3%4\n")
+                .arg(i)
+                .arg(colorBox->getR(), 2, 16, QChar('0'))
+                .arg(colorBox->getG(), 2, 16, QChar('0'))
+                .arg(colorBox->getB(), 2, 16, QChar('0'));
+            if (fout.write(line.toUtf8()) == -1) break;
+        }
+    }
+
+    if (!fout.commit()) {
+        QMessageBox::critical(this, QStringLiteral("Error Saving User Palette"), fout.errorString());
+    }
+}
+
+void MainWindow::readUserPalette() {
+    auto path = paletteFile();
+    if (path.isEmpty()) return;
+    QFile fin(path);
+    if (!fin.exists()) return;
+    if (!fin.open(QIODevice::ReadOnly)) {
+        QMessageBox::critical(this, QStringLiteral("Error Opening User Palette"), fin.errorString());
+        return;
+    }
+
+    while (!fin.atEnd()) {
+        QByteArray line = fin.readLine(80); // [n] = #001122
+        if (line.size() < 14) continue;
+        if (line[0] != '[') continue;
+        int i = line.indexOf("] = #");
+        if (i < 2) continue;
+        bool ok;
+        int index = line.mid(1, i-1).toInt(&ok);
+        if (!ok || index < 0 || index >= stdPalCount) continue;
+        i += 5;
+        if (i+6 > line.size()) continue;
+        int r = line.mid(i, 2).toInt(&ok, 16);
+        if (!ok) continue;
+        int g = line.mid(i+2, 2).toInt(&ok, 16);
+        if (!ok) continue;
+        int b = line.mid(i+4, 2).toInt(&ok, 16);
+        if (!ok) continue;
+
+        userPalette->at(index)->setRGB(r, g, b);
+    }
+    fin.close();
+}
+
+QString MainWindow::paletteFile() {
+    QDir cfgDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+    if (!cfgDir.exists()) {
+        if (!cfgDir.mkpath(".")) {
+            QMessageBox::critical(this,
+                QStringLiteral("Error Creating App Config Directory"),
+                QStringLiteral("There was an error creating the directory ") + cfgDir.path());
+            return QStringLiteral("");
+        }
+    }
+    return cfgDir.filePath("userpalette.txt");
 }
 
 

@@ -19,6 +19,12 @@ public:
     ColorBox(QWidget *parent, Color &appColor);
 
     void setRGB(const RgbTriple &triple) { color.setRGB(triple); update(rect()); }
+    void setRGB(int r, int g, int b) { color.setRGB(r, g, b); update(rect()); }
+    int getR() const { return color.getR(); }
+    int getG() const { return color.getG(); }
+    int getB() const { return color.getB(); }
+    bool hasChanged() const { return changed; }
+    bool isWhite();
 
 protected:
     virtual void dragEnterEvent(QDragEnterEvent *event) override;
@@ -34,6 +40,7 @@ private:
     Color color;
     QPoint pt;
     bool leftDown;
+    bool changed;
 
     void startDrag();
 };
@@ -45,8 +52,12 @@ public:
             const RgbTriple *initColors = nullptr, int initCount = 0);
 
     ColorBox *operator[](int i) { return colors[i]; }
+    ColorBox *at(int i) { return colors[i]; }
+    int size() const { return colors.size(); }
 
     void setDroppable();
+    bool anyChanged();
+
 private:
     std::vector<ColorBox *> colors;
 };

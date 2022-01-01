@@ -19,6 +19,7 @@ static void setPalette() {
 
 int main(int argc, char **argv) {
     QApplication app(argc, argv);
+    app.setApplicationDisplayName(QStringLiteral("ycolorpicker"));
     QApplication::setWindowIcon(QIcon(":images/app-128.png"));
 
     setPalette();

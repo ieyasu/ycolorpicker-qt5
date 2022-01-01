@@ -61,14 +61,26 @@ void Palette::setDroppable() {
     }
 }
 
+bool Palette::anyChanged() {
+    for (auto it = colors.begin(); it != colors.end(); ++it) {
+        if ((*it)->hasChanged()) return true;
+    }
+    return false;
+}
+
+
 // *********************************************************************
 
 ColorBox::ColorBox(QWidget *parent, Color &ac)
     : QWidget(parent), appColor(ac), color(255, 255, 255),
-      leftDown(false)
+      leftDown(false), changed(false)
 {
     setMinimumSize(cbSize, cbSize);
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+}
+
+bool ColorBox::isWhite() {
+    return color.getR() == 255 && color.getG() == 255 && color.getB() == 255;
 }
 
 void ColorBox::dragEnterEvent(QDragEnterEvent *event) {
@@ -83,6 +95,7 @@ void ColorBox::dropEvent(QDropEvent *event) {
     if (data->hasColor() && (pa == Qt::MoveAction || pa == Qt::CopyAction)) {
         event->acceptProposedAction();
         color = qvariant_cast<QColor>(data->colorData());
+        changed = true;
         update(rect());
     }
 }

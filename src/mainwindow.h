@@ -5,26 +5,25 @@
 
 #include <QChar>
 #include <QLabel>
+#include <QString>
 #include <QWidget>
 
-class HueSlider;
-class RedSlider;
-class GreenSlider;
-class BlueSlider;
-class SaturationValue;
+class Palette;
 
 class MainWindow : public QWidget {
     Q_OBJECT
 public:
     explicit MainWindow();
 
+protected:
+    virtual void closeEvent(QCloseEvent *event) override;
+
 private:
     Color color;
-    SaturationValue *satval;
-    HueSlider *hueslider;
-    RedSlider *redslider;
-    GreenSlider *greenslider;
-    BlueSlider *blueslider;
+    Palette *userPalette;
+
+    void readUserPalette();
+    QString paletteFile();
 };
 
 class CmpLabel : public QLabel {
