@@ -1,3 +1,4 @@
+# CMakeLists.txt for YColorPicker
 set(ycolorpicker_SRCS
     color.cpp
     color_formats.cpp

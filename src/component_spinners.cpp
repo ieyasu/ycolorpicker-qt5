@@ -1,3 +1,9 @@
+/* component_spinners.cpp - widgets for adjusting color components in YColorPicker
+ * Copyright 2022 Matthew S. Bishop
+ *
+ * This program is licensed under the terms of the GNU GPL version 3. See the
+ * file LICENSE.txt or <https://www.gnu.org/licenses/> for details.
+ */
 #include "colorpicker.h"
 #include "color.h"
 #include "component_spinners.h"

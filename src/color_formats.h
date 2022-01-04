@@ -1,3 +1,9 @@
+/* color_formats.h - output format display widgets for YColorPicker
+ * Copyright 2022 Matthew S. Bishop
+ *
+ * This program is licensed under the terms of the GNU GPL version 3. See the
+ * file LICENSE.txt or <https://www.gnu.org/licenses/> for details.
+ */
 #ifndef COLOR_FORMATS_H
 #define COLOR_FORMATS_H
 
