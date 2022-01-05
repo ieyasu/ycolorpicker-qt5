@@ -36,10 +36,25 @@ AboutDialog::AboutDialog()
     auto aboutQt = new TextButton(this, "About Qt");
     btnBox->addWidget(aboutQt);
     connect(aboutQt, &TextButton::clicked, qApp, &QApplication::aboutQt);
+    aboutQt->installEventFilter(this);
 
     btnBox->addStretch();
 
     auto close = new TextButton(this, "Close");
     btnBox->addWidget(close);
     connect(close, &TextButton::clicked, this, &QWidget::hide);
+    close->installEventFilter(this);
+
+    close->setFocus();
+}
+
+bool AboutDialog::eventFilter(QObject *target, QEvent *event) {
+    if (event->type() == QEvent::KeyPress) {
+        auto keyEvent = static_cast<QKeyEvent *>(event);
+        if (keyEvent->key() == Qt::Key_Escape) {
+            hide();
+            return true;
+        }
+    }
+    return false;
 }

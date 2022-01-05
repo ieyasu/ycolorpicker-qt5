@@ -13,6 +13,9 @@ class AboutDialog : public QWidget {
     Q_OBJECT
 public:
     AboutDialog();
+
+protected:
+    virtual bool eventFilter(QObject *target, QEvent *event) override;
 };
 
 #endif // ABOUTDIALOG_H
