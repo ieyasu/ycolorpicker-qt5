@@ -84,11 +84,22 @@ TextButton::TextButton(QWidget *parent, const QString &label)
     : PushButton(parent), text(label)
 {
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    setFocusPolicy(Qt::TabFocus);
 }
 
 QSize TextButton::sizeHint() const {
     QRect bounds = fontMetrics().boundingRect(text);
     return QSize(bounds.width() + spacing * 2, inputHeight);
+}
+
+void TextButton::keyPressEvent(QKeyEvent *event) {
+    switch (event->key()) {
+    case Qt::Key_Return:
+    case Qt::Key_Enter:
+    case Qt::Key_Space:
+        emit clicked();
+        break;
+    }
 }
 
 void TextButton::paintEvent(QPaintEvent *event) {
@@ -103,7 +114,7 @@ void TextButton::paintEvent(QPaintEvent *event) {
     QPoint corners[] = {{0,0}, {x2,0}, {0,y2}, {x2,y2}};
     painter.drawPoints(corners, 4);
 
-    if (leftDown) {
+    if (leftDown || hasFocus()) {
         painter.setPen(outline);
         QLine lines[] = {
             { 1, 0,x2-1,   0}, // top
@@ -116,4 +127,14 @@ void TextButton::paintEvent(QPaintEvent *event) {
 
     painter.setPen(Qt::white);
     painter.drawText(rect(), Qt::AlignCenter, text);
+}
+
+void TextButton::focusInEvent(QFocusEvent *event) {
+    (void)event;
+    update(rect());
+}
+
+void TextButton::focusOutEvent(QFocusEvent *event) {
+    (void)event;
+    update(rect());
 }
