@@ -43,4 +43,18 @@ private:
     QPixmap pixmap;
 };
 
+class TextButton : public PushButton {
+    Q_OBJECT
+public:
+    TextButton(QWidget *parent, const QString &label);
+
+    virtual QSize sizeHint() const;
+
+protected:
+    virtual void paintEvent(QPaintEvent *event) override;
+
+private:
+    QString text;
+};
+
 #endif // PUSH_BUTTON_H

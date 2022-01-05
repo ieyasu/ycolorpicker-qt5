@@ -20,6 +20,8 @@ static void setPalette() {
     pal.setColor(QPalette::ButtonText, Qt::white);
     pal.setColor(QPalette::BrightText, Qt::white);
     pal.setColor(QPalette::Highlight,  hilight);
+    pal.setColor(QPalette::Link,       linkColor);
+    pal.setColor(QPalette::LinkVisited,visitedLink);
     QApplication::setPalette(pal);
 }
 
@@ -29,6 +31,10 @@ int main(int argc, char **argv) {
     QApplication::setWindowIcon(QIcon(":images/app-128.png"));
 
     setPalette();
+
+    QFont font = app.font();
+    font.setPixelSize(14);
+    app.setFont(font);
 
     MainWindow mainWin;
     mainWin.show();

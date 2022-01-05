@@ -1,5 +1,6 @@
 # CMakeLists.txt for YColorPicker
 set(ycolorpicker_SRCS
+    aboutdialog.cpp
     color.cpp
     color_formats.cpp
     component_spinners.cpp

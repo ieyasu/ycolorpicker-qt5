@@ -14,6 +14,7 @@
 #include <QString>
 #include <QWidget>
 
+class AboutDialog;
 class Palette;
 
 class MainWindow : public QWidget {
@@ -21,12 +22,16 @@ class MainWindow : public QWidget {
 public:
     explicit MainWindow();
 
+public slots:
+    void showAbout();
+
 protected:
     virtual void closeEvent(QCloseEvent *event) override;
 
 private:
     Color color;
     Palette *userPalette;
+    AboutDialog *aboutDlg;
 
     void readUserPalette();
     QString paletteFile();

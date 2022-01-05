@@ -7,6 +7,8 @@
 #ifndef COLORPICKER_H
 #define COLORPICKER_H
 
+#define COLORPICKER_VERSION "1.0"
+
 #include <QColor>
 
 static constexpr int spacing = 12;
@@ -14,6 +16,8 @@ static constexpr int margin = 20;
 static constexpr int indicatorSize = 7;
 static constexpr int indicatorSize1 = indicatorSize - 1;
 static constexpr int inputHeight = 26;
+static constexpr int closeBtnWidth = 80;
+static constexpr int fmtLabelWidth = 36;
 
 // saturation/value square
 static constexpr int svSize = 360;
@@ -50,8 +54,9 @@ static const QRgb editBackground = qRgb( 50, 50, 50);
 static const QRgb btnBackground  = qRgb( 97, 97,152);
 static const QRgb btnHover       = qRgb( 86, 86,137);
 static const QRgb hilight        = qRgb( 86,131,198);
-static const QRgb outline        = qRgb(122,122,122);//150,150,150);
-
+static const QRgb outline        = qRgb(122,122,122);
+static const QRgb linkColor      = qRgb(139,139,255);
+static const QRgb visitedLink    = qRgb(255,121,255);
 
 struct RgbTriple {
     int r, g, b;

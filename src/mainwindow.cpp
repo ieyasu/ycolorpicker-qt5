@@ -5,6 +5,7 @@
  * file LICENSE.txt or <https://www.gnu.org/licenses/> for details.
  */
 #include "colorpicker.h"
+#include "aboutdialog.h"
 #include "color.h"
 #include "color_formats.h"
 #include "currcolordisplay.h"
@@ -36,13 +37,13 @@ static QHBoxLayout *mkHsvBox(MainWindow *win, HsvSpinner *spinner, QChar c) {
     box->addWidget(new CmpLabel(win, c));
     box->addSpacing(3);
     box->addWidget(spinner);
-    box->addStretch();
     return box;
 }
 
 static ImageButton *addFmtField(MainWindow *win, QHBoxLayout *box, QWidget *fmt, const QString &text) {
-    auto lbl = new QLabel(win);
-    lbl->setText(text);
+    box->addSpacing(margin);
+    auto lbl = new QLabel(text, win);
+    lbl->setFixedWidth(fmtLabelWidth);
     box->addWidget(lbl);
     box->addSpacing(3);
     box->addWidget(fmt);
@@ -50,15 +51,16 @@ static ImageButton *addFmtField(MainWindow *win, QHBoxLayout *box, QWidget *fmt,
     auto clip = new ImageButton(win, ":images/to_clipboard.png");
     clip->setToolTip(QStringLiteral("Copy to clipboard"));
     box->addWidget(clip);
-    box->addSpacing(indicatorSize);
+    box->addStretch();
     return clip;
 }
 
 MainWindow::MainWindow()
     : QWidget(nullptr),
-      color(0.0f, 0.8f, 0.8f)
+      color(0.0f, 0.8f, 0.8f),
+      aboutDlg(nullptr)
 {
-    setWindowTitle("Color Picker");
+    setWindowTitle("YColorPicker");
     setAutoFillBackground(true);
 
     auto satval = new SaturationValue(this, color);
@@ -92,6 +94,8 @@ MainWindow::MainWindow()
 
     auto currColor = new CurrentColorDisplay(this, color);
 
+    hueBox->addStretch();
+
     auto hexFmt = new HexFmt(this, color);
     auto clip = addFmtField(this, satBox, hexFmt, QStringLiteral("Hex:"));
     connect(clip, SIGNAL(clicked()), hexFmt, SLOT(toClipboard()));
@@ -99,6 +103,18 @@ MainWindow::MainWindow()
     auto rgbFmt = new RgbFmt(this, color);
     clip = addFmtField(this, valBox, rgbFmt, QStringLiteral("RGB:"));
     connect(clip, SIGNAL(clicked()), rgbFmt, SLOT(toClipboard()));
+
+    auto aboutBtn = new TextButton(this, "About");
+    aboutBtn->setMinimumWidth(closeBtnWidth);
+    satBox->addWidget(aboutBtn);
+    satBox->addSpacing(indicatorSize);
+    connect(aboutBtn, &TextButton::clicked, this, &MainWindow::showAbout);
+
+    auto closeBtn = new TextButton(this, "Exit");
+    closeBtn->setMinimumWidth(closeBtnWidth);
+    valBox->addWidget(closeBtn);
+    valBox->addSpacing(indicatorSize);
+    connect(closeBtn, SIGNAL(clicked()), qApp, SLOT(closeAllWindows()));
 
     auto vbox = new QVBoxLayout();
     vbox->setSpacing(spacing);
@@ -123,6 +139,7 @@ MainWindow::MainWindow()
     grid->addLayout(satBox, 2, 1, 1, 2);
     grid->addLayout(valBox, 3, 1, 1, 2);
     grid->addLayout(vbox, 0, 2);
+    grid->addItem(new QSpacerItem(1, indicatorSize), 4, 0, 1, -1);
     setLayout(grid);
 
     connect(&color, &Color::changed, satval, &SaturationValue::colorChanged);
@@ -143,6 +160,11 @@ MainWindow::MainWindow()
     color.setHue(204.0f);
 
     satval->setFocus();
+}
+
+void MainWindow::showAbout() {
+    if (!aboutDlg) aboutDlg = new AboutDialog();
+    aboutDlg->show();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
