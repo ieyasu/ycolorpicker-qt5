@@ -21,6 +21,7 @@ class MainWindow : public QWidget {
     Q_OBJECT
 public:
     explicit MainWindow();
+    virtual ~MainWindow();
 
 public slots:
     void showAbout();

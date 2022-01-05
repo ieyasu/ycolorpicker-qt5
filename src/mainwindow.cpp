@@ -162,6 +162,10 @@ MainWindow::MainWindow()
     satval->setFocus();
 }
 
+MainWindow::~MainWindow() {
+    delete aboutDlg;
+}
+
 void MainWindow::showAbout() {
     if (!aboutDlg) aboutDlg = new AboutDialog();
     aboutDlg->show();
