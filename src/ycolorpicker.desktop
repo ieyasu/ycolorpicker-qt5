@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=YColorPicker
+Comment=Color Selection Tool
+Exec=ycolorpicker
+Terminal=false
+Type=Application
+Icon=ycolorpicker
+Categories=Graphics
