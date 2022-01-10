@@ -22,7 +22,7 @@ AboutDialog::AboutDialog()
         "<p>A neato color selection tool.</p>"
         "<p>Copyright 2022 <a href=\"mailto:mattsbishop@gmail.com\">Matthew S. Bishop</a></p>"
         "<p>License: <a href=\"https://www.gnu.org/licenses/#GPL\">GNU General Public License Version 3</a></p>"
-        "<p>Website: <a href=\"https://github.com/ieyasu/ycolorpicker\">github.com/ieyasu/ycolorpicker</a></p>"
+        "<p>Website: <a href=\"https://" WEBSITE "\">" WEBSITE "</a></p>"
     );
     lbl->setOpenExternalLinks(true);
     vbox->addWidget(lbl);

@@ -8,6 +8,7 @@
 #define COLORPICKER_H
 
 #define COLORPICKER_VERSION "1.0"
+#define WEBSITE "github.com/ieyasu/ycolorpicker-qt5"
 
 #include <QColor>
 
